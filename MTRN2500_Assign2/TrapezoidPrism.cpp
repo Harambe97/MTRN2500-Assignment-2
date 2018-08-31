@@ -34,7 +34,7 @@ TrapezoidPrism::TrapezoidPrism(double x_, double y_, double z_, double rotation_
 }
 
 // Define the front, back, top, bottom and corners of the trapezoid using geometry and draw the trapezoid.
-// Take note that the coordinate axes and rotations follow a right - handed convention.
+// Take note that the coordinate axes follow a right - handed convention, rotations follow a left - handed convention.
 void TrapezoidPrism::draw() { 
 	double front = -depth / 2;
 	double back = depth / 2;
@@ -47,7 +47,7 @@ void TrapezoidPrism::draw() {
 	
 	// Draw the front face.
 	glPushMatrix(); // Places the defined shape on top of the stack.
-		positionInGL(); // When called, changes the position of the coordinate axes to the values have been set.
+		positionInGL(); // When called, changes the position of the coordinate axes to the values that have been set.
 		setColorInGL(); // When called, changes the colour of the prism to the values that have been set.
 		glBegin(GL_QUADS);
 			// Defines vertices to enclose a shape, order of defining vertices matters.
@@ -57,9 +57,9 @@ void TrapezoidPrism::draw() {
 			glVertex3d(bottom_right, bottom, front);
 			glVertex3d(top_right, top, front);
 		glEnd();
-	glPopMatrix(); // Pops the defined shape off the stack, will reset origin	
+	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.	
 	
-	// Draw the back face
+	// Draw the back face.
 	glPushMatrix();
 		positionInGL();
 		setColorInGL();
@@ -71,7 +71,7 @@ void TrapezoidPrism::draw() {
 		glEnd();
 	glPopMatrix(); 
 
-	// Draw the top face of the trapezoid.
+	// Draw the top face.
 	glPushMatrix();
 		positionInGL();
 		setColorInGL();
@@ -83,7 +83,7 @@ void TrapezoidPrism::draw() {
 		glEnd();
 	glPopMatrix();
 
-	// Draw the bottom face
+	// Draw the bottom face.
 	glPushMatrix();
 		positionInGL();
 		setColorInGL();
