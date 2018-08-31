@@ -34,7 +34,7 @@ TrapezoidPrism::TrapezoidPrism(double x_, double y_, double z_, double rotation_
 }
 
 // Define the front, back, top, bottom and corners of the trapezoid using geometry and draw the trapezoid.
-// Take note that the coordinate axes follow a right - handed convention, rotations follow a left - handed convention.
+// Take note that the coordinate axes and rotations follow a left - handed convention.
 void TrapezoidPrism::draw() { 
 	double front = -depth / 2;
 	double back = depth / 2;

@@ -34,7 +34,7 @@ Cylinder::Cylinder(double x_, double y_, double z_, double rotation_, double Rad
 	depth = Depth;
 }
 
-// Take note that the coordinate axes follow a right - handed convention, rotations follow a left - handed convention.
+// Take note that the coordinate axes and rotations follow a left - handed convention.
 void Cylinder::draw() {
 	static GLUquadric * CylinderQuadric = gluNewQuadric();
 
