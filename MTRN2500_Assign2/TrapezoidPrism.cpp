@@ -20,6 +20,8 @@
 #include <sys/time.h>
 #endif
 
+// Code written by: Haydn St. James (z5118383)
+
 // Utilises the constructor in the 'Shape' class to determine if the prism is to be translated or rotated.
 // Works similarly to the 'Obstacle' class.
 // Uses the variables outlined in the server specifications for shapes, which can be found on the Moodle page of MTRN2500.
