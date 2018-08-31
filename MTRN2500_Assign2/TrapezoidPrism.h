@@ -9,7 +9,7 @@ class TrapezoidPrism : public Shape {
 		double depth;
 		double a_offset;
 	public:
-		TrapezoidPrism(double x1, double x2, double y, double z, double theta1);
+		TrapezoidPrism(double x_, double y_, double z_, double rotation_, double Bottom_length, double Top_length, double Height, double Depth, double Offset);
 		void draw();
 };
 
