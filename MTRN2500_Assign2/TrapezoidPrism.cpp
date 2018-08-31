@@ -45,60 +45,60 @@ void TrapezoidPrism::draw() {
 		glBegin(GL_QUADS);
 			// Defines vertices to enclose a shape, order of defining vertices matters.
 			// The OpenGL functions 'trace' the outline of the surface using the defined vertices.
-			glVertex3f(top_left, top, front);
-			glVertex3f(bottom_left, bottom, front);
-			glVertex3f(bottom_right, bottom, front);
-			glVertex3f(top_right, top, front);
+			glVertex3d(top_left, top, front);
+			glVertex3d(bottom_left, bottom, front);
+			glVertex3d(bottom_right, bottom, front);
+			glVertex3d(top_right, top, front);
 		glEnd();
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin	
 	
 	// Draw the back face
 	glPushMatrix();
 		glBegin(GL_QUADS);
-			glVertex3f(top_left, top, back);
-			glVertex3f(bottom_left, bottom, back);
-			glVertex3f(bottom_right, bottom, back);
-			glVertex3f(top_right, top, back);
+			glVertex3d(top_left, top, back);
+			glVertex3d(bottom_left, bottom, back);
+			glVertex3d(bottom_right, bottom, back);
+			glVertex3d(top_right, top, back);
 		glEnd();
 	glPopMatrix(); 
 
 	// Draw the top face of the trapezoid.
 	glPushMatrix();
 		glBegin(GL_QUADS);
-			glVertex3f(top_left, top, front);
-			glVertex3f(top_left, top, back);
-			glVertex3f(top_right, top, back);
-			glVertex3f(top_right, top, front);
+			glVertex3d(top_left, top, front);
+			glVertex3d(top_left, top, back);
+			glVertex3d(top_right, top, back);
+			glVertex3d(top_right, top, front);
 		glEnd();
 	glPopMatrix();
 
 	// Draw the bottom face
 	glPushMatrix();
 		glBegin(GL_QUADS);
-			glVertex3f(bottom_left, bottom, front);
-			glVertex3f(bottom_left, bottom, back);
-			glVertex3f(bottom_right, bottom, back);
-			glVertex3f(bottom_right, bottom, front);
+			glVertex3d(bottom_left, bottom, front);
+			glVertex3d(bottom_left, bottom, back);
+			glVertex3d(bottom_right, bottom, back);
+			glVertex3d(bottom_right, bottom, front);
 		glEnd();
 	glPopMatrix();
 
 	// Draw the left face.
 	glPushMatrix();
 		glBegin(GL_QUADS);
-			glVertex3f(top_left, top, front);
-			glVertex3f(top_left, top, back);
-			glVertex3f(bottom_left, bottom, back);
-			glVertex3f(bottom_left, bottom, front);
+			glVertex3d(top_left, top, front);
+			glVertex3d(top_left, top, back);
+			glVertex3d(bottom_left, bottom, back);
+			glVertex3d(bottom_left, bottom, front);
 		glEnd();
 	glPopMatrix();
 
 	// Draw the right face.
 	glPushMatrix();
 		glBegin(GL_QUADS);
-			glVertex3f(top_right, top, front);
-			glVertex3f(top_right, top, back);
-			glVertex3f(bottom_right, bottom, back);
-			glVertex3f(bottom_right, bottom, front);
+			glVertex3d(top_right, top, front);
+			glVertex3d(top_right, top, back);
+			glVertex3d(bottom_right, bottom, back);
+			glVertex3d(bottom_right, bottom, front);
 		glEnd();
 	glPopMatrix();
 }
