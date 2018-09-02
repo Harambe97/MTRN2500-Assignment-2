@@ -4,11 +4,8 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
-#include <unistd.h>
-#include <sys/time.h>
 #elif defined(WIN32)
 #include <Windows.h>
-#include <tchar.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
@@ -16,8 +13,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <unistd.h>
-#include <sys/time.h>
 #endif
 
 // Code written by: Haydn St. James (z5118383)
