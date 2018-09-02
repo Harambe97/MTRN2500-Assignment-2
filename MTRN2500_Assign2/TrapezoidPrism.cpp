@@ -41,7 +41,7 @@ void TrapezoidPrism::draw() {
 	double bottom_right = -a_length / 2;
 	
 	// Draw the front face.
-	glPushMatrix(); // Places the defined shape on top of the stack.
+	glPushMatrix(); // Places the shape to be defined on top of the stack.
 		positionInGL(); // When called, changes the position of the coordinate axes to the values that have been set.
 		setColorInGL(); // When called, changes the colour of the prism to the values that have been set.
 		glBegin(GL_QUADS);

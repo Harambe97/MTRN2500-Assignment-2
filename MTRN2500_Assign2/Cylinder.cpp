@@ -34,11 +34,11 @@ void Cylinder::draw() {
 	static GLUquadric * CylinderQuadric = gluNewQuadric();
 
 	// Draw the curved surface.
-	glPushMatrix(); // Places the defined shape on top of the stack.
+	glPushMatrix(); // Places the shape to be defined on top of the stack.
 		positionInGL(); // When called, changes the position of the coordinate axes to the values that have been set.
 		setColorInGL(); // When called, changes the colour of the cylinder to the values that have been set.
 		glTranslated(0, radius, -depth / 2); // Set the cylinder to rest with its circumference on the 'floor' of the
-											 // digital world, halfway along its depth.
+											 // digital world, halfway along its depth at the origin of the coordinate axes.
 		gluCylinder(CylinderQuadric, radius, radius, depth, 20, 1); // Draw using the in - built OpenGL cylinder function.
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.
 
