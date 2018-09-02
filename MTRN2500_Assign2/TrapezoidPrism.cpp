@@ -28,7 +28,7 @@ TrapezoidPrism::TrapezoidPrism(double x_, double y_, double z_, double rotation_
 	a_offset = Offset;
 }
 
-// Define the front, back, top, bottom and corners of the trapezoid using geometry and draw the trapezoid.
+// Define the front, back, top, bottom and corners of the trapezoid using geometry and draw the trapezoid face - by - face.
 // Take note that the coordinate axes and rotations follow a left - handed convention.
 void TrapezoidPrism::draw() { 
 	double front = -depth / 2;

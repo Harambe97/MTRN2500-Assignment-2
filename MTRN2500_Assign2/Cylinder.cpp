@@ -47,16 +47,15 @@ void Cylinder::draw() {
 		positionInGL(); 
 		setColorInGL(); 
 		glTranslated(0, radius, -depth / 2); // Set the front face to rest with its circumference on the 'floor' of the 
-											 // digital world.
-		gluDisk(CylinderQuadric, 0, radius, 20, 1);
+											 // digital world. Similarly done for the back face of the cylinder.
+		gluDisk(CylinderQuadric, 0, radius, 20, 1); // Draw using the in - built OpenGL disk function.
 	glPopMatrix();
 
 	// Draw the back face.
 	glPushMatrix();
 		positionInGL();
 		setColorInGL();
-		glTranslated(0, radius, depth / 2); // Set the back face to rest with its circumference on the 'floor' of the 
-											// digital world.
+		glTranslated(0, radius, depth / 2);
 		gluDisk(CylinderQuadric, 0, radius, 20, 1);
 	glPopMatrix();
 }
