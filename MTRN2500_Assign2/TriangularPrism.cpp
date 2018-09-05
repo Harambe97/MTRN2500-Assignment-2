@@ -21,7 +21,10 @@
 //uses variables outlined from the specifications of shape found in Moodle.
 //length_d represents the depth of the triangular prism.
 TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle):Shape(x_,y_,z_, rotation_) {
-	
+	red = 0.0;
+	blue = 0.0;
+	green = 1.0;
+
 	a_length = length_a;
 	b_length = length_b;
 	depth = length_d;

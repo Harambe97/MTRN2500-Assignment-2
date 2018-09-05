@@ -20,6 +20,10 @@
 
 //uses variables outlined from the specifications of shape found in Moodle.
 RectangularPrism::RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz):Shape(x_, y_, z_, rotation_) {
+	red = 1.0;
+	blue = 0.0;
+	green = 0.0;
+	
 	x_length = Lx;
 	y_length = Ly;
 	z_length = Lz;
