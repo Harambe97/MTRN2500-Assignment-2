@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{9EC15B22-B99D-4212-8FC8-0E0AB553DECB}</ProjectGuid>
+    <ProjectGuid>{A72C7717-5429-446A-8F5B-9995D782B201}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MTRN2500Assign2</RootNamespace>
+    <RootNamespace>Ass2Remake</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -89,12 +89,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OpenGL\OpenGL files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\USER\Desktop\C++\OpenGL\OpenGL files\OpenGL files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\OpenGL\OpenGL files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\USER\Desktop\C++\OpenGL\OpenGL files\OpenGL files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -105,13 +105,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\USER\Desktop\C++\OpenGL\OpenGL files\OpenGL files\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\USER\Desktop\C++\OpenGL\OpenGL files\OpenGL files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -149,35 +146,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.hpp" />
-    <ClInclude Include="Frustum.hpp" />
-    <ClInclude Include="Ground.hpp" />
-    <ClInclude Include="HUD.hpp" />
-    <ClInclude Include="KeyManager.hpp" />
-    <ClInclude Include="Messages.hpp" />
-    <ClInclude Include="Obstacle.hpp" />
-    <ClInclude Include="ObstacleManager.hpp" />
-    <ClInclude Include="Quaternion.hpp" />
-    <ClInclude Include="RemoteDataManager.hpp" />
-    <ClInclude Include="Shape.hpp" />
-    <ClInclude Include="VectorMaths.hpp" />
-    <ClInclude Include="Vehicle.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Camera.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Frustum.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Ground.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\HUD.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\KeyManager.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Messages.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Obstacle.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\ObstacleManager.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Quaternion.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\RectangularPrism.h" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\RemoteDataManager.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Shape.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\TriangularPrism.h" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\VectorMaths.hpp" />
+    <ClInclude Include="..\..\..\..\Desktop\Assignment 2\Vehicle.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Frustum.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="HUD.cpp" />
-    <ClCompile Include="KeyManager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Messages.cpp" />
-    <ClCompile Include="Obstacle.cpp" />
-    <ClCompile Include="ObstacleManager.cpp" />
-    <ClCompile Include="Quaternion.cpp" />
-    <ClCompile Include="RemoteDataManager.cpp" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="VectorMaths.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Frustum.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Ground.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\HUD.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\KeyManager.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\main.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Messages.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Obstacle.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\ObstacleManager.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Quaternion.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\RectangularPrism.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\RemoteDataManager.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Shape.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\TriangularPrism.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\VectorMaths.cpp" />
+    <ClCompile Include="..\..\..\..\Desktop\Assignment 2\Vehicle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
