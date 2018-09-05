@@ -34,6 +34,9 @@
 #include "Shape.hpp"
 #include "Vehicle.hpp"
 
+#include "RectangularPrism.h"
+#include "TriangularPrism.h"
+
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
 #include "HUD.hpp"
@@ -155,16 +158,20 @@ void drawGoals()
 
 void testf() {
 	//the order matters!
-	glTranslated(10, 0, 0);  //translate the shape (move it)
-	glRotated(45, 0, 0, 1);
-	glBegin(GL_QUADS);
+	//glTranslated(10, 0, 0);  //translate the shape (move it)
+	//glRotated(45, 0, 0, 1);
+	/*glBegin(GL_QUADS);
 		glVertex3f(0, 0, 0);
 		glVertex3f(0, 5, 0);
 		glVertex3f(5, 5, 0);
 		glVertex3f(5, 0, 0);
-	glEnd();
+	glEnd(); */
 
-}
+	RectangularPrism rec1(5, 5, 5, 45, 10,10,20);
+	TriangularPrism tri1(10, 2, 2, 45, 10, 30, 20, 90);
+	rec1.draw();
+	tri1.draw();
+} 
 
 void display() {
 	frameCounter++;
