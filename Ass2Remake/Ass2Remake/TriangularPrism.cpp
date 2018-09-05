@@ -28,6 +28,7 @@ TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotatio
 	theta = angle;
 }
 
+//Note that the coordinate axes follow a left - handed convention.
 void TriangularPrism::draw() {
 
 	//to convert degrees to radians
