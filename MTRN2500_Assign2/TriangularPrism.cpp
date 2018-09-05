@@ -16,14 +16,11 @@
 #include <GL/glut.h>
 #endif
 
-#define PI 3.14159265358979323846264338327950
+//Code written by: Mei Yan Tang (z5129009)
 
-// Code written by: Mei Yan Tang (z5129009)
-
+//uses variables outlined from the specifications of shape found in Moodle.
+//length_d represents the depth of the triangular prism.
 TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle):Shape(x_,y_,z_, rotation_) {
-	red = 0.0;
-	blue = 0.0;
-	green = 1.0;
 	
 	a_length = length_a;
 	b_length = length_b;
@@ -31,23 +28,28 @@ TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotatio
 	theta = angle;
 }
 
+//Note that the coordinate axes follow a left - handed convention.
 void TriangularPrism::draw() {
-	double degree = theta * (PI/180); //to convert degrees to radians
+
+	//to convert degrees to radians
+	double degree = theta * (3.14159265358979323846264338327950/180); 
+	//to calculate the height of the triangle
 	double height = b_length*sin(degree);
+	//to calculate the x coordinate for the third point.
 	double front = (a_length / 2) - height * cos(degree);
 
-	// Front face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_TRIANGLES);
+	//front face
+	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix
+	positionInGL(); //sets the position
+	setColorInGL(); //sets the colour
+	glBegin(GL_TRIANGLES); //defines an enclosed shape with 3 vertices
 		glVertex3f(a_length/2, 0, -depth/2);
 		glVertex3f(-a_length/2, 0, -depth/2);
 		glVertex3f(front, height, -depth/2);
 	glEnd();
-	glPopMatrix();
+	glPopMatrix(); //pops the current matrix stack, replacing the current matrix with the one below it on the stack.
 
-	// Back face
+	//back face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -58,7 +60,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	// Right face
+	//right face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -70,7 +72,8 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	// Left face
+
+	//left face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -82,7 +85,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	// Bottom face
+	//bottom face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -93,4 +96,7 @@ void TriangularPrism::draw() {
 		glVertex3f(a_length / 2, 0, depth / 2);
 	glEnd();
 	glPopMatrix();
+
+
+
 }
