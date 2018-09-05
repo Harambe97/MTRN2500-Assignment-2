@@ -18,6 +18,7 @@
 
 //Code written by: Mei Yan Tang (z5129009)
 
+//uses variables outlined from the specifications of shape found in Moodle.
 RectangularPrism::RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz):Shape(x_, y_, z_, rotation_) {
 	x_length = Lx;
 	y_length = Ly;
@@ -25,19 +26,20 @@ RectangularPrism::RectangularPrism(double x_, double y_, double z_, double rotat
 
 }
 
+
 void RectangularPrism::draw() {
 
 	//front face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_QUADS);
+	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix
+	positionInGL(); //sets the position
+	setColorInGL(); //sets the colour
+	glBegin(GL_QUADS); //defines an enclosed shape with 4 vertices
 		glVertex3f(x_length / 2, 0, -z_length / 2);
 		glVertex3f(x_length / 2, y_length, -z_length / 2);
 		glVertex3f(-x_length / 2, y_length, -z_length / 2);
 		glVertex3f(-x_length / 2, 0, -z_length / 2);
 	glEnd();
-	glPopMatrix();
+	glPopMatrix(); //pops the current matrix stack, replacing the current matrix with the one below it on the stack.
 
 	//right face
 	glPushMatrix();
