@@ -3,6 +3,8 @@
 
 //Code written by: Mei Yan Tang (z5129009)
 
+//Class is derived by 'Shape' class that defines a Triangular Prism.
+//variables were obtained by the shape specification from Moodle.
 class TriangularPrism : public Shape
 {
 private:
