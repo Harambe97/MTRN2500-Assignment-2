@@ -1,7 +1,7 @@
 #pragma once
 #include "Shape.hpp"
 
-//Code written by: Mei Yan Tang (z5129009)
+// Code written by: Mei Yan Tang (z5129009)
 
 class TriangularPrism : public Shape {
 private:
@@ -14,4 +14,3 @@ public:
 	TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle);
 	void draw();
 };
-

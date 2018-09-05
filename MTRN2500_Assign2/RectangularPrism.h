@@ -1,7 +1,7 @@
 #pragma once
 #include "Shape.hpp"
 
-//Code written by: Mei Yan Tang (z5129009)
+// Code written by: Mei Yan Tang (z5129009)
 
 class RectangularPrism : public Shape {
 private:
@@ -12,5 +12,4 @@ private:
 public:
 	RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz);
 	void draw();
-
 };

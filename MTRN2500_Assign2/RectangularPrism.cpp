@@ -1,5 +1,4 @@
 #include "RectangularPrism.h"
-#include <cmath>
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
@@ -16,7 +15,7 @@
 #include <GL/glut.h>
 #endif
 
-//Code written by: Mei Yan Tang (z5129009)
+// Code written by: Mei Yan Tang (z5129009)
 
 RectangularPrism::RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz):Shape(x_, y_, z_, rotation_) {
 	red = 1.0;
@@ -26,12 +25,11 @@ RectangularPrism::RectangularPrism(double x_, double y_, double z_, double rotat
 	x_length = Lx;
 	y_length = Ly;
 	z_length = Lz;
-
 }
 
 void RectangularPrism::draw() {
 
-	//front face
+	// Front face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -43,7 +41,7 @@ void RectangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//right face
+	// Right face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -55,7 +53,7 @@ void RectangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//back face
+	// Back face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -67,7 +65,7 @@ void RectangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//left face
+	// Left face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -79,7 +77,7 @@ void RectangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//Top face
+	// Top face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -91,7 +89,7 @@ void RectangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//bottom face
+	// Bottom face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -102,5 +100,4 @@ void RectangularPrism::draw() {
 		glVertex3f(-x_length / 2, 0, z_length / 2);
 	glEnd();
 	glPopMatrix();
-
 }

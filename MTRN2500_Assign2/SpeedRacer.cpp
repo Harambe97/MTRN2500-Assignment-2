@@ -31,35 +31,43 @@ SpeedRacer::SpeedRacer(double x_, double y_, double z_, double rotation_) {
 }
 
 void SpeedRacer::draw() {
-	/*// move to the vehicle’s local frame of reference
-	glPushMatrix();
-	positionInGL();
-		glTranslated(-30, 0, 0);
-		TrapezoidPrism Prism1(0, 0, 0, 0, 4, 2, 2, 2, 1);
-		Cylinder C1(0, 0, 0, 0, 1, 3);
-		addShape(&Prism1);
-		addShape(&C1);
-		for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
-			(*it)->draw();
-		}
-	// move back to global frame of reference
-	glPopMatrix();*/
-
 	// Move to the vehicle’s local frame of reference.
 	glPushMatrix();
 		positionInGL();
 			// Instantiate the shapes that were derived from the shape class and draw the shapes relative to the vehicle's
-			// local frame of reference.
-			RectangularPrism R1(0, 0, 0, 90, 2, 2, 4);
-			R1.draw();
-			TriangularPrism T1(3, 0, 0, 180, 2, 2, 2, 90);
-			T1.draw();
-			TrapezoidPrism Trap1(-2, 2, 0, 0, 2, 2, 1, 2, 1);
-			Trap1.draw();
-			Cylinder C1(1, 0, 0, 0, 1, 3);
-			C1.draw();
-			Cylinder C2(-2, 0, 0, 0, 1, 3);
-			C2.draw();
+			// local frame of reference. Each shape was given a name to represent their function/location on the vehicle.
+			RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
+			Body.draw();
+			TriangularPrism Bumper(3, 0, 0, 180, 2, 2, 2, 90);
+			Bumper.draw();
+			TrapezoidPrism Spoiler(-2, 2, 0, 0, 2, 2, 1, 2, 1);
+			Spoiler.draw();
+
+			// Draw the front wheels of the vehicle.
+			Cylinder FrontWheelLeft(1, 0, -1, 0, 0.75, 1);
+			FrontWheelLeft.draw();
+			Cylinder FrontWheelRight(1, 0, 1, 0, 0.75, 1);
+			FrontWheelRight.draw();
+
+			// *** NEED TO IMPLEMENT
+			// Check if the vehicle is steering. If yes, rotate the front wheels about their respective y - axes.
+			if (steering != 0) {
+				FrontWheelLeft.setRotation(steering);
+				FrontWheelRight.setRotation(steering);
+			}
+
+			// Draw the back wheels of the vehicle.
+			Cylinder BackWheelLeft(-1, 0, -1, 0, 0.75, 1);
+			BackWheelLeft.draw();
+			Cylinder BackWheelRight(-1, 0, 1, 0, 0.75, 1);
+			BackWheelRight.draw();
+
+			// *** NEED TO IMPLEMENT 
+			// Check if the car is moving. If yes, rotate all the wheels about their respective z - axes.
+			if (speed != 0) {
+				
+			}
+
 	// Move back to global frame of reference.
 	glPopMatrix();
 }

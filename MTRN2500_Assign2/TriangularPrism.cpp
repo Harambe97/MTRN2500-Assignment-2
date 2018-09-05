@@ -16,15 +16,15 @@
 #include <GL/glut.h>
 #endif
 
-//Code written by: Mei Yan Tang (z5129009)
+#define PI 3.14159265358979323846264338327950
 
+// Code written by: Mei Yan Tang (z5129009)
 
 TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle):Shape(x_,y_,z_, rotation_) {
 	red = 0.0;
 	blue = 0.0;
 	green = 1.0;
 	
-
 	a_length = length_a;
 	b_length = length_b;
 	depth = length_d;
@@ -32,12 +32,11 @@ TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotatio
 }
 
 void TriangularPrism::draw() {
-
-	double degree = theta * (3.14159265358979323846264338327950/180); //to convert degrees to radians
+	double degree = theta * (PI/180); //to convert degrees to radians
 	double height = b_length*sin(degree);
 	double front = (a_length / 2) - height * cos(degree);
 
-	//front face
+	// Front face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -48,7 +47,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//back face
+	// Back face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -59,7 +58,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//right face
+	// Right face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -71,8 +70,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-
-	//left face
+	// Left face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
@@ -84,7 +82,7 @@ void TriangularPrism::draw() {
 	glEnd();
 	glPopMatrix();
 
-	//bottom face
+	// Bottom face
 	glPushMatrix();
 	positionInGL();
 	setColorInGL();
