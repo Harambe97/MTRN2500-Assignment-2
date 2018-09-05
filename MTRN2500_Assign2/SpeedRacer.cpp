@@ -34,6 +34,7 @@ void SpeedRacer::draw() {
 	// Move to the vehicle’s local frame of reference.
 	glPushMatrix();
 		positionInGL();
+
 			// Instantiate the shapes that were derived from the shape class and draw the shapes relative to the vehicle's
 			// local frame of reference. Each shape was given a name to represent their function/location on the vehicle.
 			RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
@@ -43,29 +44,21 @@ void SpeedRacer::draw() {
 			TrapezoidPrism Spoiler(-2, 2, 0, 0, 2, 2, 1, 2, 1);
 			Spoiler.draw();
 
-			// Draw the front wheels of the vehicle.
-			Cylinder FrontWheelLeft(1, 0, -1, 0, 0.75, 1);
+			// Set the rotation of the front wheels about their respective y - axes to be equal to the steering angle.
+			Cylinder FrontWheelLeft(1, 0, -1, steering, 0.75, 1);
 			FrontWheelLeft.draw();
-			Cylinder FrontWheelRight(1, 0, 1, 0, 0.75, 1);
+			Cylinder FrontWheelRight(1, 0, 1, steering, 0.75, 1);
 			FrontWheelRight.draw();
-
-			// *** NEED TO IMPLEMENT
-			// Check if the vehicle is steering. If yes, rotate the front wheels about their respective y - axes.
-			if (steering != 0) {
-				FrontWheelLeft.setRotation(steering);
-				FrontWheelRight.setRotation(steering);
-			}
-
-			// Draw the back wheels of the vehicle.
 			Cylinder BackWheelLeft(-1, 0, -1, 0, 0.75, 1);
 			BackWheelLeft.draw();
 			Cylinder BackWheelRight(-1, 0, 1, 0, 0.75, 1);
 			BackWheelRight.draw();
 
 			// *** NEED TO IMPLEMENT 
-			// Check if the car is moving. If yes, rotate all the wheels about their respective z - axes.
+			// Check if the vehicle is moving. If yes, rotate all the wheels about their respective z - axes according to 
+			// the direction that the vehicle is accelerating in.
 			if (speed != 0) {
-				
+	
 			}
 
 	// Move back to global frame of reference.
