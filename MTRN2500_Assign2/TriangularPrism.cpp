@@ -41,7 +41,7 @@ void TriangularPrism::draw() {
 	//to calculate the height of the triangle
 	double height = b_length*sin(rad);
 	//to calculate the x coordinate for the third point.
-	double front = (a_length / 2) - height * cos(rad);
+	double front = -(a_length / 2) + height * cos(rad);
 
 	//front face
 	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix

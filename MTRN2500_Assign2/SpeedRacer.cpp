@@ -39,7 +39,7 @@ void SpeedRacer::draw() {
 			// local frame of reference. Each shape was given a name to represent their function/location on the vehicle.
 			RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
 			Body.draw();
-			TriangularPrism Bumper(3, 0, 0, 180, 2, 2, 2, 90);
+			TriangularPrism Bumper(3, 0, 0, 0, 2, 2, 2, 90);
 			Bumper.draw();
 			TrapezoidPrism Spoiler(-2, 2, 0, 0, 2, 2, 1, 2, 1);
 			Spoiler.draw();

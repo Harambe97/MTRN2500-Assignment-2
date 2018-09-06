@@ -21,6 +21,10 @@
 // Works similarly to the 'Obstacle' class.
 // Uses the variables outlined in the server specifications for shapes, which can be found on the Moodle page of MTRN2500.
 TrapezoidPrism::TrapezoidPrism(double x_, double y_, double z_, double rotation_, double Bottom_length, double Top_length, double Height, double Depth, double Offset):Shape(x_, y_, z_, rotation_) {
+	red = 0.0;
+	green = 0.0;
+	blue = 1.0;
+
 	a_length = Bottom_length;
 	b_length = Top_length;
 	height = Height;

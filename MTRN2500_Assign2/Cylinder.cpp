@@ -21,10 +21,6 @@
 // Works similarly to the 'Obstacle' class.
 // Uses the variables outlined in the server specifications for shapes, which can be found on the Moodle page of MTRN2500.
 Cylinder::Cylinder(double x_, double y_, double z_, double rotation_, double Radius, double Depth):Shape(x_, y_, z_, rotation_) {
-	red = 1.0;
-	blue = 0.5;
-	green = 1.0;
-	
 	radius = Radius;
 	depth = Depth;
 }
