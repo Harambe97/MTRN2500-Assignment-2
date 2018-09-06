@@ -43,65 +43,57 @@ void TriangularPrism::draw() {
 	//to calculate the x coordinate for the third point.
 	double front = -(a_length / 2) + height * cos(rad);
 
-	//front face
 	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix
 	positionInGL(); //sets the position
 	setColorInGL(); //sets the colour
-	glBegin(GL_TRIANGLES); //defines an enclosed shape with 3 vertices
-		glVertex3f(a_length/2, 0, -depth/2);
-		glVertex3f(-a_length/2, 0, -depth/2);
-		glVertex3f(front, height, -depth/2);
-	glEnd();
-	glPopMatrix(); //pops the current matrix stack, replacing the current matrix with the one below it on the stack.
 
-	//back face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_TRIANGLES);
-		glVertex3f(a_length / 2, 0, depth / 2);
-		glVertex3f(-a_length / 2, 0, depth / 2);
-		glVertex3f(front, height, depth / 2);
-	glEnd();
+		//front face
+		glPushMatrix(); 
+			glBegin(GL_TRIANGLES); //defines an enclosed shape with 3 vertices
+				glVertex3f(a_length/2, 0, -depth/2);
+				glVertex3f(-a_length/2, 0, -depth/2);
+				glVertex3f(front, height, -depth/2);
+			glEnd();
+		glPopMatrix(); //pops the current matrix stack, replacing the current matrix with the one below it on the stack.
+
+		//back face
+		glPushMatrix();
+			glBegin(GL_TRIANGLES);
+				glVertex3f(a_length / 2, 0, depth / 2);
+				glVertex3f(-a_length / 2, 0, depth / 2);
+				glVertex3f(front, height, depth / 2);
+			glEnd();
+		glPopMatrix();
+
+		//right face
+		glPushMatrix();
+			glBegin(GL_QUADS);
+				glVertex3f(a_length / 2, 0, -depth / 2);
+				glVertex3f(front, height, -depth / 2);
+				glVertex3f(front, height, depth / 2);
+				glVertex3f(a_length / 2, 0, depth / 2);
+			glEnd();
+		glPopMatrix();
+
+
+		//left face
+		glPushMatrix();
+			glBegin(GL_QUADS);
+				glVertex3f(-a_length / 2, 0, -depth / 2);
+				glVertex3f(front, height, -depth / 2);
+				glVertex3f(front, height, depth / 2);
+				glVertex3f(-a_length / 2, 0, depth / 2);
+			glEnd();
+		glPopMatrix();
+
+		//bottom face
+		glPushMatrix();
+			glBegin(GL_QUADS);
+				glVertex3f(a_length / 2, 0, -depth / 2);
+				glVertex3f(-a_length / 2, 0, -depth / 2);
+				glVertex3f(-a_length / 2, 0, depth / 2);
+				glVertex3f(a_length / 2, 0, depth / 2);
+			glEnd();
+		glPopMatrix();
 	glPopMatrix();
-
-	//right face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_QUADS);
-		glVertex3f(a_length / 2, 0, -depth / 2);
-		glVertex3f(front, height, -depth / 2);
-		glVertex3f(front, height, depth / 2);
-		glVertex3f(a_length / 2, 0, depth / 2);
-	glEnd();
-	glPopMatrix();
-
-
-	//left face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_QUADS);
-		glVertex3f(-a_length / 2, 0, -depth / 2);
-		glVertex3f(front, height, -depth / 2);
-		glVertex3f(front, height, depth / 2);
-		glVertex3f(-a_length / 2, 0, depth / 2);
-	glEnd();
-	glPopMatrix();
-
-	//bottom face
-	glPushMatrix();
-	positionInGL();
-	setColorInGL();
-	glBegin(GL_QUADS);
-		glVertex3f(a_length / 2, 0, -depth / 2);
-		glVertex3f(-a_length / 2, 0, -depth / 2);
-		glVertex3f(-a_length / 2, 0, depth / 2);
-		glVertex3f(a_length / 2, 0, depth / 2);
-	glEnd();
-	glPopMatrix();
-
-
-
 }
