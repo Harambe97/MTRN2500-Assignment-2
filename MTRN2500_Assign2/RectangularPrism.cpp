@@ -1,5 +1,4 @@
 #include "RectangularPrism.h"
-#include <cmath>
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
