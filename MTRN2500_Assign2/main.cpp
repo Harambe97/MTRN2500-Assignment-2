@@ -34,6 +34,14 @@
 #include "Shape.hpp"
 #include "Vehicle.hpp"
 
+// Include the header files for derived classes of shapes to be drawn for Assessment 1
+#include "RectangularPrism.h"
+#include "TriangularPrism.h"
+#include "TrapezoidPrism.h"
+#include "Cylinder.h"
+#include "SpeedRacer.h"
+#include <math.h>
+
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
 #include "HUD.hpp"
@@ -56,7 +64,7 @@ using namespace std;
 using namespace scos;
 
 // ** An additional function added to the main file called 'DrawTest()' was used to test and draw shapes. 
-// ** (function definition around line 160)
+// ** (function definition around line 168)
 
 // Used to store the previous mouse location so we
 //   can calculate relative mouse movement.
@@ -110,7 +118,7 @@ int main(int argc, char ** argv) {
 	//   custom vehicle.
 	// -------------------------------------------------------------------------
 
-	//vehicle = new MyVehicle();
+	vehicle = new SpeedRacer(0, 0, 0, 0);
 
 
 	// add test obstacles
@@ -157,19 +165,16 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 200)
+// (function called above 'glutSwapBuffers()', around line 223)
 void DrawTest() {
-	/*glPushMatrix(); // Places the defined shape on top of the stack
-	glTranslated(10, 0, 0); // Translates the coordinate system a number of units along the target axis
-	glRotated(45, 0, 0, 1); // Rotate aboout a target axis (in this case, it is the z-axis), clockwise positive, anti negative
-	glBegin(GL_QUADS);
-		// Defines vertices to enclose a shape, ORDER MATTERs, 'traces' outline of the shape using vertices
-		glVertex3f(0, 0, 0);	
-		glVertex3f(0, 5, 0);
-		glVertex3f(5, 5, 0);
-		glVertex3f(5, 0, 0);
-	glEnd();
-	glPopMatrix(); // Pops the defined shape off the stack, will reset origin*/
+	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
+	R1.draw();
+	TriangularPrism T1(-20, 0, 20, 45, 5, 5, 10, 90);
+	T1.draw();
+	TrapezoidPrism Prism1(-20, 0, -20, 0, 10, 5, 10, 10, 3);
+	Prism1.draw();
+	Cylinder C1(20, 0, -20, 90, 3, 10);
+	C1.draw();
 }
 
 void display() {
@@ -215,8 +220,8 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 160)
-	DrawTest();
+	// (function definition around line 168)
+	//DrawTest();
 	
 	glutSwapBuffers();
 };
@@ -319,7 +324,7 @@ void idle() {
 				otherVehicles.clear();
 
 				// uncomment this line to connect to the robotics server.
-				//RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
+				RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
 
 				// on connect, let's tell the server what we look like
 				if (RemoteDataManager::IsConnected()) {
@@ -329,7 +334,8 @@ void idle() {
 					vm.remoteID = 0;
 
 					//
-					// student code goes here
+					// ** student code goes here
+					// ** Need to send "VehicleModel" to the server 
 					//
 
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
@@ -366,10 +372,10 @@ void idle() {
 								VehicleModel vm = models[i];
 								
 								// uncomment the line below to create remote vehicles
-								//otherVehicles[vm.remoteID] = new MyVehicle();
+								otherVehicles[vm.remoteID] = new SpeedRacer(40, 0, 0, 0);
 
 								//
-								// more student code goes here
+								// ** more student code goes here
 								//
 							}
 							break;
@@ -479,6 +485,14 @@ void keydown(unsigned char key, int x, int y) {
 	case 'p':
 		Camera::get()->togglePursuitMode();
 		break;
+	// Challenge: Press 'L' to give chase to the server vehicle with vehicle ID 1.
+	/*case 'l':
+		VehicleState ServerVehicle;
+		Camera::get()->togglePursuitMode();
+		if (ServerVehicle.remoteID == 1) {
+			vehicle.
+		}
+		break;*/
 	}
 
 };
