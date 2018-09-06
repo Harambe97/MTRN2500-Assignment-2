@@ -59,3 +59,11 @@ void Cylinder::draw() {
 		gluDisk(CylinderQuadric, 0, radius, 20, 1);
 	glPopMatrix();
 }
+
+bool Cylinder::setIfRotating() {
+	return isRotating = true;
+}
+
+bool Cylinder::setIfSteering() {
+	return isSteering = true;
+}

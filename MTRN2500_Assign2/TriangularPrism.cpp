@@ -16,6 +16,8 @@
 #include <GL/glut.h>
 #endif
 
+#define PI 3.14159265358979323846264338327950
+
 //Code written by: Mei Yan Tang (z5129009)
 
 //uses variables outlined from the specifications of shape found in Moodle.
@@ -35,11 +37,11 @@ TriangularPrism::TriangularPrism(double x_, double y_, double z_, double rotatio
 void TriangularPrism::draw() {
 
 	//to convert degrees to radians
-	double degree = theta * (3.14159265358979323846264338327950/180); 
+	double rad = theta * (PI/180); 
 	//to calculate the height of the triangle
-	double height = b_length*sin(degree);
+	double height = b_length*sin(rad);
 	//to calculate the x coordinate for the third point.
-	double front = (a_length / 2) - height * cos(degree);
+	double front = (a_length / 2) - height * cos(rad);
 
 	//front face
 	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix

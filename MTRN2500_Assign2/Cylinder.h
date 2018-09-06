@@ -9,8 +9,12 @@ class Cylinder : public Shape {
 	private:
 		double radius;
 		double depth;
+		bool isRotating;
+		bool isSteering;
 	public:
 		Cylinder(double x_, double y_, double z_, double rotation_, double Radius, double Depth);
 		void draw();
+		bool setIfRotating();
+		bool setIfSteering();
 };
 
