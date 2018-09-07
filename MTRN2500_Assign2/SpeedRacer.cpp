@@ -69,37 +69,7 @@ void SpeedRacer::draw() {
 				FrontWheelLeft.setIfSteering();
 				FrontWheelRight.setIfSteering();
 			}
-			// *** NEED TO IMPLEMENT 
-			// Check if the vehicle is moving. If yes, rotate all the wheels about their respective z - axes according to 
-			// the direction that the vehicle is accelerating in.
-			/*isRotating = false;
-			double i = 0.0;
-			TriangularPrism T2(45, 0, 0, i, 5, 5, 5, 60);
-			if (speed != 0) {
-				isRotating = true;
-			}
-			else {
-				isRotating = false;
-			}
-			while (isRotating) {
-				if (speed > 0.0) {
-					for (i; i < 360.0; i++) {
-						if (i >= 360.0) {
-							i = 0.0;
-						}
-					}
-				}
-				else if (speed < 0.0) {
-					if (speed < 0.0) {
-						for (i; i > 0.0; i--) {
-							if (i <= 0.0) {
-								i = 0.0;
-							}
-						}
-					}
-				}
-			}
-			T2.draw();*/
+
 	// Move back to global frame of reference.
 	glPopMatrix();
 }

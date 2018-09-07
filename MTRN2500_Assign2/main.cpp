@@ -332,12 +332,40 @@ void idle() {
 
 					VehicleModel vm;
 					vm.remoteID = 0;
+					
+					// Code written by: Haydn St. James (z5118383)
 
-					//
-					// ** student code goes here
-					// ** Need to send "VehicleModel" to the server 
-					//
+					// Sends the model of 'SpeedRacer' to the server by adding the shapes used to draw 'SpeedRacer' into
+					// the vector list declared in 'Vehicle.hpp'.
+					Shape *s = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+				    // Dynamic cast to convert from shape pointer into the respective shape pointer.
+					RectangularPrism *rect = dynamic_cast<RectangularPrism*>(s);  
+					vehicle->addShape(rect);
 
+					s = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
+					TriangularPrism *tri = dynamic_cast<TriangularPrism*>(s);
+					vehicle->addShape(tri);
+
+					s = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
+					TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(s);
+					vehicle->addShape(trap);
+
+					s = new Cylinder(1, 0, -1, steering, 0.75, 1);
+					Cylinder *cyl = dynamic_cast<Cylinder*>(s);
+					vehicle->addShape(cyl);
+
+					s = new Cylinder(1, 0, 1, steering, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(s);
+					vehicle->addShape(cyl);
+
+					s = new Cylinder(-1, 0, -1, 0, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(s);
+					vehicle->addShape(cyl);
+
+					s = new Cylinder(-1, 0, 1, 0, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(s);
+					vehicle->addShape(cyl);
+					
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
 			}
@@ -372,11 +400,65 @@ void idle() {
 								VehicleModel vm = models[i];
 								
 								// uncomment the line below to create remote vehicles
-								otherVehicles[vm.remoteID] = new SpeedRacer(40, 0, 0, 0);
+								otherVehicles[vm.remoteID] = new SpeedRacer(0, 0, 0, 0);
 
-								//
-								// ** more student code goes here
-								//
+								// Code written by: Haydn St. James (z5118383)
+
+								// Obtain shapes and dimensions of the vehicles of other users and draw them.
+								// Create a pointer to access information about the vehicles and shapes from the server.
+								ShapeInit * ServerShape = new ShapeInit;
+								/*if (ServerShape->type = RECTANGULAR_PRISM) {
+									// Set the dimensions of the obtained shape to what was given by another user.
+									ServerShape->params.rect.xlen;
+									ServerShape->params.rect.ylen;
+									ServerShape->params.rect.zlen;
+									
+									// Set the colour of the obtained shape to what was given by another user.
+									vehicle->setColor(ServerShape->rgb[0], ServerShape->rgb[1], ServerShape->rgb[2]);
+									
+									// Set the position of the obtained shape to what was given by another user.
+									vehicle->setX(ServerShape->xyz[0]);
+									vehicle->setY(ServerShape->xyz[1]);
+									vehicle->setZ(ServerShape->xyz[2]);
+									vehicle->setRotation(ServerShape->rotation);
+								} else if (ServerShape->type = TRIANGULAR_PRISM) {
+									ServerShape->params.tri.alen;
+									ServerShape->params.tri.angle;
+									ServerShape->params.tri.blen;
+									ServerShape->params.tri.depth;
+									
+									vehicle->setColor(ServerShape->rgb[0], ServerShape->rgb[1], ServerShape->rgb[2]);
+
+									vehicle->setX(ServerShape->xyz[0]);
+									vehicle->setY(ServerShape->xyz[1]);
+									vehicle->setZ(ServerShape->xyz[2]);
+									vehicle->setRotation(ServerShape->rotation);
+								} else if(ServerShape->type = TRAPEZOIDAL_PRISM) {
+									ServerShape->params.trap.alen;
+									ServerShape->params.trap.aoff;
+									ServerShape->params.trap.blen;
+									ServerShape->params.trap.depth;
+									ServerShape->params.trap.height;
+									
+									vehicle->setColor(ServerShape->rgb[0], ServerShape->rgb[1], ServerShape->rgb[2]);
+
+									vehicle->setX(ServerShape->xyz[0]);
+									vehicle->setY(ServerShape->xyz[1]);
+									vehicle->setZ(ServerShape->xyz[2]);
+									vehicle->setRotation(ServerShape->rotation);
+								} else if (ServerShape->type = CYLINDER) {
+									ServerShape->params.cyl.depth;
+									ServerShape->params.cyl.isRolling;
+									ServerShape->params.cyl.isSteering;
+									ServerShape->params.cyl.radius;
+									
+									vehicle->setColor(ServerShape->rgb[0], ServerShape->rgb[1], ServerShape->rgb[2]);
+
+									vehicle->setX(ServerShape->xyz[0]);
+									vehicle->setY(ServerShape->xyz[1]);
+									vehicle->setZ(ServerShape->xyz[2]);
+									vehicle->setRotation(ServerShape->rotation);
+								}*/
 							}
 							break;
 						}
@@ -490,7 +572,7 @@ void keydown(unsigned char key, int x, int y) {
 		VehicleState ServerVehicle;
 		Camera::get()->togglePursuitMode();
 		if (ServerVehicle.remoteID == 1) {
-			vehicle.
+			vehicle.setSpeed();
 		}
 		break;*/
 	}
