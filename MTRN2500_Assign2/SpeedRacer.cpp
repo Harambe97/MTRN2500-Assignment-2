@@ -37,9 +37,9 @@ void SpeedRacer::draw() {
 
 			// Instantiate the shapes that were derived from the shape class and draw the shapes relative to the vehicle's
 			// local frame of reference. Each shape was given a name to represent their function/location on the vehicle.
-			RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
+			/*RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
 			Body.draw();
-			TriangularPrism Bumper(3, 0, 0, 180, 2, 2, 2, 90);
+			TriangularPrism Bumper(3, 0, 0, 0, 2, 2, 2, 90);
 			Bumper.draw();
 			TrapezoidPrism Spoiler(-2, 2, 0, 0, 2, 2, 1, 2, 1);
 			Spoiler.draw();
@@ -52,14 +52,56 @@ void SpeedRacer::draw() {
 			Cylinder BackWheelLeft(-1, 0, -1, 0, 0.75, 1);
 			BackWheelLeft.draw();
 			Cylinder BackWheelRight(-1, 0, 1, 0, 0.75, 1);
-			BackWheelRight.draw();
+			BackWheelRight.draw();*/
 
-			// *** NEED TO IMPLEMENT 
-			// Check if the vehicle is moving. If yes, rotate all the wheels about their respective z - axes according to 
-			// the direction that the vehicle is accelerating in.
-			if (speed != 0) {
-	
+			Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+			// Dynamic cast to convert from shape pointer into the respective shape pointer.
+			RectangularPrism *rect = dynamic_cast<RectangularPrism*>(newShape);
+			SpeedRacer::addShape(rect);
+
+			newShape = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
+			TriangularPrism *tri = dynamic_cast<TriangularPrism*>(newShape);
+			SpeedRacer::addShape(tri);
+
+			newShape = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
+			TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(newShape);
+			SpeedRacer::addShape(trap);
+
+			newShape = new Cylinder(1, 0, -1, 0, 0.75, 1);
+			Cylinder *cyl = dynamic_cast<Cylinder*>(newShape);
+			SpeedRacer::addShape(cyl);
+
+			newShape = new Cylinder(1, 0, 1, 0, 0.75, 1);
+			cyl = dynamic_cast<Cylinder*>(newShape);
+			SpeedRacer::addShape(cyl);
+
+			newShape = new Cylinder(-1, 0, -1, 0, 0.75, 1);
+			cyl = dynamic_cast<Cylinder*>(newShape);
+			SpeedRacer::addShape(cyl);
+
+			newShape = new Cylinder(-1, 0, 1, 0, 0.75, 1);
+			cyl = dynamic_cast<Cylinder*>(newShape);
+			SpeedRacer::addShape(cyl);
+
+			for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
+				(*it)->draw();
 			}
+			
+			// Check if the vehicle is moving forward or backward. If yes, set that the cylinders representing the wheels
+			// are rotating using the variable 'isRotating' in 'Cylinder.h'.
+			/*if (speed != 0) {
+				FrontWheelLeft.setIfRotating();
+				FrontWheelRight.setIfRotating();
+				BackWheelLeft.setIfRotating();
+				BackWheelRight.setIfRotating();
+			}
+
+			// Check if the vehicle is steering left or right. If yes, set that the cylinders representing the front wheels
+			// are steering using the variable 'isSteering' in 'Cylinder.h'.
+			if (steering != 0) {
+				FrontWheelLeft.setIfSteering();
+				FrontWheelRight.setIfSteering();
+			}*/
 
 	// Move back to global frame of reference.
 	glPopMatrix();

@@ -9,8 +9,11 @@ class Cylinder : public Shape {
 	private:
 		double radius;
 		double depth;
+		bool isRotating; // Variable to check if a wheel on the custom vehicle is rotating.
+		bool isSteering; // Variable to check if a wheel on the custom vehicle is steering.
 	public:
 		Cylinder(double x_, double y_, double z_, double rotation_, double Radius, double Depth);
 		void draw();
+		bool setIfRotating(); // Function to check if a wheel on the custom vehicle is rotating.
+		bool setIfSteering(); // Function to check if a wheel on the custom vehicle is steering.
 };
-
