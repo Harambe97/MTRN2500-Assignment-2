@@ -333,10 +333,42 @@ void idle() {
 					VehicleModel vm;
 					vm.remoteID = 0;
 					
-					//
-					// student code goes here
-					//
+					// Create a pointer of 'Shape' type that adds shapes into the shape vector defined in 'Vehicle.hpp'.
+					// Add the body of the vehicle to the shape vector.
+					Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+					// Dynamic cast to convert from a pointer of type 'Shape' into a pointer of type 'RectangularPrism'.
+					// Similar casts were done for other shapes used to define the vehicle.
+					RectangularPrism *rect = dynamic_cast<RectangularPrism*>(newShape);
+					vehicle->addShape(rect);
+
+					// Add the bumper of the vehicle to the shape vector.
+					newShape = new TriangularPrism (3, 0, 0, 0, 2, 2, 2, 90);
+					TriangularPrism *tri = dynamic_cast<TriangularPrism*>(newShape);
+					vehicle->addShape(tri);
+
+					// Add the spoiler of the vehicle to the shape vector.
+					newShape = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
+					TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(newShape);
+					vehicle->addShape(trap);
 					
+					// Add the front wheels to the shape vector.
+					newShape = new Cylinder(1, 0, -1, steering, 0.75, 1);
+					Cylinder *cyl = dynamic_cast<Cylinder*>(newShape);
+					vehicle->addShape(cyl);
+
+					newShape = new Cylinder(1, 0, 1, steering, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(newShape);
+					vehicle->addShape(cyl);
+
+					// Add the back wheels to the shape vector.
+					newShape = new Cylinder(-1, 0, -1, 0, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(newShape);
+					vehicle->addShape(cyl);
+
+					newShape = new Cylinder(-1, 0, 1, 0, 0.75, 1);
+					cyl = dynamic_cast<Cylinder*>(newShape);
+					vehicle->addShape(cyl);
+
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
 			}
@@ -379,60 +411,68 @@ void idle() {
 								// Create a pointer to access information about the vehicles and shapes from the server.
 								for (std::vector<ShapeInit>::iterator it = vm.shapes.begin(); it != vm.shapes.end(); it++) {
 									RectangularPrism * rect = new RectangularPrism(0, 0, 0, 0, 0, 0, 0);
+									TriangularPrism *tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
+									TrapezoidPrism *trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
+									Cylinder * cyl = new Cylinder(0, 0, 0, 0, 0, 0);
+									
 									if (it->type = RECTANGULAR_PRISM) {
 										// Set the dimensions of the obtained shape to what was given by another user.
-										//rect->setX_length(it->params.rect.xlen);
-										//rect->setY_length(it->params.rect.ylen);
-										//rect->setZ_length(it->params.rect.zlen);
+										rect->setX_length(it->params.rect.xlen);
+										rect->setY_length(it->params.rect.ylen);
+										rect->setZ_length(it->params.rect.zlen);
 
 										// Set the colour of the obtained shape to what was given by another user.
-										otherVehicles[vm.remoteID]->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
+										rect->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
 
 										// Set the position of the obtained shape to what was given by another user.
-										otherVehicles[vm.remoteID]->setX(it->xyz[0]);
-										otherVehicles[vm.remoteID]->setY(it->xyz[1]);
-										otherVehicles[vm.remoteID]->setZ(it->xyz[2]);
-										otherVehicles[vm.remoteID]->setRotation(it->rotation);
+										rect->setX(it->xyz[0]);
+										rect->setY(it->xyz[1]);
+										rect->setZ(it->xyz[2]);
+										rect->setRotation(it->rotation);
+										otherVehicles[vm.remoteID]->addShape(rect);
 									}
 									else if (it->type = TRIANGULAR_PRISM) {
-										it->params.tri.alen;
-										it->params.tri.angle;
-										it->params.tri.blen;
-										it->params.tri.depth;
+										tri->setA_length(it->params.tri.alen);
+										tri->setTheta(it->params.tri.angle);
+										tri->setB_length(it->params.tri.blen);
+										tri->setDepth(it->params.tri.depth);
 
-										otherVehicles[vm.remoteID]->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
+										tri->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
 
-										otherVehicles[vm.remoteID]->setX(it->xyz[0]);
-										otherVehicles[vm.remoteID]->setY(it->xyz[1]);
-										otherVehicles[vm.remoteID]->setZ(it->xyz[2]);
-										otherVehicles[vm.remoteID]->setRotation(it->rotation);
+										tri->setX(it->xyz[0]);
+										tri->setY(it->xyz[1]);
+										tri->setZ(it->xyz[2]);
+										tri->setRotation(it->rotation);
+										otherVehicles[vm.remoteID]->addShape(tri);
 									}
 									else if (it->type = TRAPEZOIDAL_PRISM) {
-										it->params.trap.alen;
-										it->params.trap.aoff;
-										it->params.trap.blen;
-										it->params.trap.depth;
-										it->params.trap.height;
+										trap->setA_length(it->params.trap.alen);
+										trap->setA_offset(it->params.trap.aoff);
+										trap->setB_length(it->params.trap.blen);
+										trap->setDepth(it->params.trap.depth);
+										trap->setHeight(it->params.trap.height);
 
-										otherVehicles[vm.remoteID]->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
+										trap->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
 
-										otherVehicles[vm.remoteID]->setX(it->xyz[0]);
-										otherVehicles[vm.remoteID]->setY(it->xyz[1]);
-										otherVehicles[vm.remoteID]->setZ(it->xyz[2]);
-										otherVehicles[vm.remoteID]->setRotation(it->rotation);
+										trap->setX(it->xyz[0]);
+										trap->setY(it->xyz[1]);
+										trap->setZ(it->xyz[2]);
+										trap->setRotation(it->rotation);
+										otherVehicles[vm.remoteID]->addShape(trap);
 									}
 									else if (it->type = CYLINDER) {
-										it->params.cyl.depth;
-										it->params.cyl.isRolling;
-										it->params.cyl.isSteering;
-										it->params.cyl.radius;
+										cyl->setRadius(it->params.cyl.radius);
+										cyl->setDepth(it->params.cyl.depth);
+										cyl->setIfRotating(it->params.cyl.isRolling);
+										cyl->setIfSteering(it->params.cyl.isSteering);
 
-										otherVehicles[vm.remoteID]->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
+										cyl->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
 
-										otherVehicles[vm.remoteID]->setX(it->xyz[0]);
-										otherVehicles[vm.remoteID]->setY(it->xyz[1]);
-										otherVehicles[vm.remoteID]->setZ(it->xyz[2]);
-										otherVehicles[vm.remoteID]->setRotation(it->rotation);
+										cyl->setX(it->xyz[0]);
+										cyl->setY(it->xyz[1]);
+										cyl->setZ(it->xyz[2]);
+										cyl->setRotation(it->rotation);
+										otherVehicles[vm.remoteID]->addShape(cyl);
 									}
 								}
 							}

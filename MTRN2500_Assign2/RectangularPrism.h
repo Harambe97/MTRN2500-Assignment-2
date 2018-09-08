@@ -14,4 +14,8 @@ class RectangularPrism : public Shape {
 	public:
 		RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz);
 		void draw();
+		// Functions below written by: Haydn St. James (z5118383)
+		void setX_length(double Lx);
+		void setY_length(double Ly);
+		void setZ_length(double Lz);
 };

@@ -54,12 +54,12 @@ void SpeedRacer::draw() {
 			Cylinder BackWheelRight(-1, 0, 1, 0, 0.75, 1);
 			BackWheelRight.draw();*/
 
-			Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+			/*Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
 			// Dynamic cast to convert from shape pointer into the respective shape pointer.
 			RectangularPrism *rect = dynamic_cast<RectangularPrism*>(newShape);
 			SpeedRacer::addShape(rect);
 
-			newShape = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
+			newShape = new TriangularPrism (3, 0, 0, 0, 2, 2, 2, 90);
 			TriangularPrism *tri = dynamic_cast<TriangularPrism*>(newShape);
 			SpeedRacer::addShape(tri);
 
@@ -67,11 +67,11 @@ void SpeedRacer::draw() {
 			TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(newShape);
 			SpeedRacer::addShape(trap);
 
-			newShape = new Cylinder(1, 0, -1, 0, 0.75, 1);
+			newShape = new Cylinder(1, 0, -1, steering, 0.75, 1);
 			Cylinder *cyl = dynamic_cast<Cylinder*>(newShape);
 			SpeedRacer::addShape(cyl);
 
-			newShape = new Cylinder(1, 0, 1, 0, 0.75, 1);
+			newShape = new Cylinder(1, 0, 1, steering, 0.75, 1);
 			cyl = dynamic_cast<Cylinder*>(newShape);
 			SpeedRacer::addShape(cyl);
 
@@ -81,7 +81,7 @@ void SpeedRacer::draw() {
 
 			newShape = new Cylinder(-1, 0, 1, 0, 0.75, 1);
 			cyl = dynamic_cast<Cylinder*>(newShape);
-			SpeedRacer::addShape(cyl);
+			SpeedRacer::addShape(cyl);*/
 
 			for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
 				(*it)->draw();
@@ -90,17 +90,27 @@ void SpeedRacer::draw() {
 			// Check if the vehicle is moving forward or backward. If yes, set that the cylinders representing the wheels
 			// are rotating using the variable 'isRotating' in 'Cylinder.h'.
 			/*if (speed != 0) {
-				FrontWheelLeft.setIfRotating();
-				FrontWheelRight.setIfRotating();
-				BackWheelLeft.setIfRotating();
-				BackWheelRight.setIfRotating();
+				FrontWheelLeft.setIfRotating(true);
+				FrontWheelRight.setIfRotating(true);
+				BackWheelLeft.setIfRotating(true);
+				BackWheelRight.setIfRotating(true);
+			}
+			else {
+				FrontWheelLeft.setIfRotating(false);
+				FrontWheelRight.setIfRotating(false);
+				BackWheelLeft.setIfRotating(false);
+				BackWheelRight.setIfRotating(false);
 			}
 
 			// Check if the vehicle is steering left or right. If yes, set that the cylinders representing the front wheels
 			// are steering using the variable 'isSteering' in 'Cylinder.h'.
 			if (steering != 0) {
-				FrontWheelLeft.setIfSteering();
-				FrontWheelRight.setIfSteering();
+				FrontWheelLeft.setIfSteering(true);
+				FrontWheelRight.setIfSteering(true);
+			}
+			else {
+				FrontWheelLeft.setIfSteering(false);
+				FrontWheelRight.setIfSteering(false);
 			}*/
 
 	// Move back to global frame of reference.

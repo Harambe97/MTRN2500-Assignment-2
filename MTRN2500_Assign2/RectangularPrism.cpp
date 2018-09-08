@@ -96,3 +96,19 @@ void RectangularPrism::draw() {
 		glPopMatrix();
 	glPopMatrix();
 }
+
+// Functions below written by: Haydn St. James (z5118383)
+
+// Functions below are used to set new dimensions for a rectangular prism if required (for example, when drawing other 
+// vehicles from the server).
+void RectangularPrism::setX_length(double Lx) {
+	x_length = Lx;
+}
+
+void RectangularPrism::setY_length(double Ly) {
+	y_length = Ly;
+}
+
+void RectangularPrism::setZ_length(double Lz) {
+	z_length = Lz;
+}

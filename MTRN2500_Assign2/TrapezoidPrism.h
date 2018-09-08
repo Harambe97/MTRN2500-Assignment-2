@@ -15,4 +15,9 @@ class TrapezoidPrism : public Shape {
 	public:
 		TrapezoidPrism(double x_, double y_, double z_, double rotation_, double Bottom_length, double Top_length, double Height, double Depth, double Offset);
 		void draw();
+		void setA_length(double Bottom_length);
+		void setB_length(double Top_length);
+		void setHeight(double Height);
+		void setDepth(double Depth);
+		void setA_offset(double Offset);
 };

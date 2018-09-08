@@ -14,6 +14,8 @@ class Cylinder : public Shape {
 	public:
 		Cylinder(double x_, double y_, double z_, double rotation_, double Radius, double Depth);
 		void draw();
-		bool setIfRotating(); // Function to check if a wheel on the custom vehicle is rotating.
-		bool setIfSteering(); // Function to check if a wheel on the custom vehicle is steering.
+		void setRadius(double Radius);
+		void setDepth(double Depth);
+		void setIfRotating(bool Rotating); // Function to check if a wheel on the custom vehicle is rotating.
+		void setIfSteering(bool Steering); // Function to check if a wheel on the custom vehicle is steering.
 };

@@ -97,3 +97,23 @@ void TriangularPrism::draw() {
 		glPopMatrix();
 	glPopMatrix();
 }
+
+// Functions written by: Haydn St. James (z5118383)
+
+// Functions below are used to set new dimensions for a triangular prism if required (for example, when drawing other 
+// vehicles from the server).
+void TriangularPrism::setA_length(double length_a) {
+	a_length = length_a;
+}
+
+void TriangularPrism::setB_length(double length_b) {
+	b_length = length_b;
+}
+
+void TriangularPrism::setDepth(double length_d) {
+	depth = length_d;
+}
+
+void TriangularPrism::setTheta(double angle) {
+	theta = angle;
+}
