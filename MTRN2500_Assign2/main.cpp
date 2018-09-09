@@ -358,8 +358,8 @@ void idle() {
 
 					// Send the colour of the previously instantiated shape to the server.
 					myVehicleShape.rgb[0] = rect->getRed();
-					myVehicleShape.rgb[1] = rect->getBlue();
-					myVehicleShape.rgb[2] = rect->getGreen();
+					myVehicleShape.rgb[1] = rect->getGreen();
+					myVehicleShape.rgb[2] = rect->getBlue();
 					
 					// Send the dimensions of the previously instantiated shape to the server.
 					myVehicleShape.params.rect.xlen = rect->getX_length();
@@ -381,8 +381,8 @@ void idle() {
 					myVehicleShape.rotation = tri->getRotation();
 
 					myVehicleShape.rgb[0] = tri->getRed();
-					myVehicleShape.rgb[1] = tri->getBlue();
-					myVehicleShape.rgb[2] = tri->getGreen();
+					myVehicleShape.rgb[1] = tri->getGreen();
+					myVehicleShape.rgb[2] = tri->getBlue();
 
 					myVehicleShape.params.tri.alen = tri->getA_length();
 					myVehicleShape.params.tri.angle = tri->getTheta();
@@ -402,8 +402,8 @@ void idle() {
 					myVehicleShape.rotation = trap->getRotation();
 
 					myVehicleShape.rgb[0] = trap->getRed();
-					myVehicleShape.rgb[1] = trap->getBlue();
-					myVehicleShape.rgb[2] = trap->getGreen();
+					myVehicleShape.rgb[1] = trap->getGreen();
+					myVehicleShape.rgb[2] = trap->getBlue();
 
 					myVehicleShape.params.trap.alen = trap->getA_length();
 					myVehicleShape.params.trap.aoff = trap->getA_offset();
@@ -424,8 +424,8 @@ void idle() {
 					myVehicleShape.rotation = cyl->getRotation();
 
 					myVehicleShape.rgb[0] = cyl->getRed();
-					myVehicleShape.rgb[1] = cyl->getBlue();
-					myVehicleShape.rgb[2] = cyl->getGreen();
+					myVehicleShape.rgb[1] = cyl->getGreen();
+					myVehicleShape.rgb[2] = cyl->getBlue();
 
 					myVehicleShape.params.cyl.depth = cyl->getDepth();
 					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
@@ -445,9 +445,9 @@ void idle() {
 					myVehicleShape.rotation = cyl->getRotation();
 
 					myVehicleShape.rgb[0] = cyl->getRed();
-					myVehicleShape.rgb[1] = cyl->getBlue();
-					myVehicleShape.rgb[2] = cyl->getGreen();
-
+					myVehicleShape.rgb[1] = cyl->getGreen();
+					myVehicleShape.rgb[2] = cyl->getBlue();
+					
 					myVehicleShape.params.cyl.depth = cyl->getDepth();
 					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
 					myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
@@ -466,8 +466,8 @@ void idle() {
 					myVehicleShape.rotation = cyl->getRotation();
 
 					myVehicleShape.rgb[0] = cyl->getRed();
-					myVehicleShape.rgb[1] = cyl->getBlue();
-					myVehicleShape.rgb[2] = cyl->getGreen();
+					myVehicleShape.rgb[1] = cyl->getGreen();
+					myVehicleShape.rgb[2] = cyl->getBlue();
 
 					myVehicleShape.params.cyl.depth = cyl->getDepth();
 					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
@@ -487,8 +487,8 @@ void idle() {
 					myVehicleShape.rotation = cyl->getRotation();
 
 					myVehicleShape.rgb[0] = cyl->getRed();
-					myVehicleShape.rgb[1] = cyl->getBlue();
-					myVehicleShape.rgb[2] = cyl->getGreen();
+					myVehicleShape.rgb[1] = cyl->getGreen();
+					myVehicleShape.rgb[2] = cyl->getBlue();
 
 					myVehicleShape.params.cyl.depth = cyl->getDepth();
 					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
@@ -536,17 +536,13 @@ void idle() {
 								// Code written by: Haydn St. James (z5118383)
 
 								// Obtain shapes and dimensions of the vehicles of other users and draw them.
-								for (std::vector<ShapeInit>::iterator it = vm.shapes.begin(); it != vm.shapes.end(); it++) {
-									
-									// Create pointers to access information about the vehicles and shapes from the server.
-									RectangularPrism * rect = new RectangularPrism(0, 0, 0, 0, 0, 0, 0);
-									TriangularPrism * tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
-									TrapezoidPrism * trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
-									Cylinder * cyl = new Cylinder(0, 0, 0, 0, 0, 0);
-									
-									// ** ADDS RECTANGLES CORRECTLY
+								for (std::vector<ShapeInit>::iterator it = vm.shapes.begin(); it != vm.shapes.end(); it++) {							
 									if (it->type = RECTANGULAR_PRISM) {
 										
+										// Create a pointer to access information about the current vehicle and the
+										// shapes used to define it from the server.
+										RectangularPrism * rect = new RectangularPrism(0, 0, 0, 0, 0, 0, 0);
+
 										// Set the dimensions of the obtained shape to what was given by another user.
 										rect->setX_length(it->params.rect.xlen);
 										rect->setY_length(it->params.rect.ylen);
@@ -566,8 +562,9 @@ void idle() {
 										otherVehicles[vm.remoteID]->addShape(rect);
 									}
 									// ** ADDS TRIANGLES INCORRECTLY, RECEIVES THEM AS REALLY LONG RECTANGLES
-									// ** COLOUR OF TRIANGLES AND TRAPEZOIDS SEEMS TO BE SWAPPED
 									else if (it->type = TRIANGULAR_PRISM) {
+										TriangularPrism * tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
+
 										tri->setA_length(it->params.tri.alen);
 										tri->setTheta(it->params.tri.angle);
 										tri->setB_length(it->params.tri.blen);
@@ -583,8 +580,9 @@ void idle() {
 										otherVehicles[vm.remoteID]->addShape(tri);
 									}
 									// ** ADDS TRAPEZOIDS INCORRECTLY, RECEIVES THEM AS RECTANGLES
-									// ** COLOUR OF TRIANGLES AND TRAPEZOIDS SEEMS TO BE SWAPPED
 									else if (it->type = TRAPEZOIDAL_PRISM) {
+										TrapezoidPrism * trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
+
 										trap->setA_length(it->params.trap.alen);
 										trap->setA_offset(it->params.trap.aoff);
 										trap->setB_length(it->params.trap.blen);
@@ -602,6 +600,8 @@ void idle() {
 									}
 									// ** ADDS CYLINDERS INCORRECTLY, RECEIVES THEM AS RECTANGLES
 									else if (it->type = CYLINDER) {
+										Cylinder * cyl = new Cylinder(0, 0, 0, 0, 0, 0);
+
 										cyl->setRadius(it->params.cyl.radius);
 										cyl->setDepth(it->params.cyl.depth);
 										cyl->setIfRolling(it->params.cyl.isRolling);
