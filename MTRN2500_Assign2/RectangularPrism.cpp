@@ -112,3 +112,16 @@ void RectangularPrism::setY_length(double Ly) {
 void RectangularPrism::setZ_length(double Lz) {
 	z_length = Lz;
 }
+
+// Functions below are used to obtain the dimensions of a locally instantiated rectangular prism to be sent to the server. 
+double RectangularPrism::getX_length() {
+	return x_length;
+}
+
+double RectangularPrism::getY_length() {
+	return y_length;
+}
+
+double RectangularPrism::getZ_length() {
+	return z_length;
+}

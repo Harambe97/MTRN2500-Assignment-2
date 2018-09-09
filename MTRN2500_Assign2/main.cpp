@@ -40,7 +40,6 @@
 #include "TrapezoidPrism.h"
 #include "Cylinder.h"
 #include "SpeedRacer.h"
-#include <math.h>
 
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
@@ -332,42 +331,171 @@ void idle() {
 
 					VehicleModel vm;
 					vm.remoteID = 0;
-					
-					// Create a pointer of 'Shape' type that adds shapes into the shape vector defined in 'Vehicle.hpp'.
+
+					// Code written by: Haydn St. James (z5118383)
+
+					// Any shapes to be added into the shape vector and sent to the server follow the same procedure as the
+					// rectangular prism below.
+
 					// Add the body of the vehicle to the shape vector.
-					Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
-					// Dynamic cast to convert from a pointer of type 'Shape' into a pointer of type 'RectangularPrism'.
-					// Similar casts were done for other shapes used to define the vehicle.
-					RectangularPrism *rect = dynamic_cast<RectangularPrism*>(newShape);
+					// Create a pointer to the instantiated shape to be added into the shape vector 
+					// defined in 'Vehicle.hpp'.
+					RectangularPrism * rect = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
 					vehicle->addShape(rect);
 
+					// Instantiate 'ShapeInit' to send information to the 'ShapeInit' data structure 
+					// defined in 'Messages.hpp'.
+					ShapeInit myVehicleShape;
+
+					// Send the type of the previously instantiated shape to the server.
+					myVehicleShape.type = RECTANGULAR_PRISM;
+					
+					// Send the position of the previously instantiated shape to the server.
+					myVehicleShape.xyz[0] = rect->getX();
+					myVehicleShape.xyz[1] = rect->getY();
+					myVehicleShape.xyz[2] = rect->getZ();
+					myVehicleShape.rotation = rect->getRotation();
+
+					// Send the colour of the previously instantiated shape to the server.
+					myVehicleShape.rgb[0] = rect->getRed();
+					myVehicleShape.rgb[1] = rect->getBlue();
+					myVehicleShape.rgb[2] = rect->getGreen();
+					
+					// Send the dimensions of the previously instantiated shape to the server.
+					myVehicleShape.params.rect.xlen = rect->getX_length();
+					myVehicleShape.params.rect.ylen = rect->getY_length();
+					myVehicleShape.params.rect.zlen = rect->getZ_length();
+
+					// Add the previously instantiated shape to the 'ShapeInit' vector in the 'VehicleModel'
+					// data structure defined in 'Messages.hpp'.
+					vm.shapes.push_back(myVehicleShape);
+
 					// Add the bumper of the vehicle to the shape vector.
-					newShape = new TriangularPrism (3, 0, 0, 0, 2, 2, 2, 90);
-					TriangularPrism *tri = dynamic_cast<TriangularPrism*>(newShape);
+					TriangularPrism * tri = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
 					vehicle->addShape(tri);
 
+					myVehicleShape.type = TRIANGULAR_PRISM;
+					myVehicleShape.xyz[0] = tri->getX();
+					myVehicleShape.xyz[1] = tri->getY();
+					myVehicleShape.xyz[2] = tri->getZ();
+					myVehicleShape.rotation = tri->getRotation();
+
+					myVehicleShape.rgb[0] = tri->getRed();
+					myVehicleShape.rgb[1] = tri->getBlue();
+					myVehicleShape.rgb[2] = tri->getGreen();
+
+					myVehicleShape.params.tri.alen = tri->getA_length();
+					myVehicleShape.params.tri.angle = tri->getTheta();
+					myVehicleShape.params.tri.blen = tri->getB_length();
+					myVehicleShape.params.tri.depth = tri->getDepth();
+
+					vm.shapes.push_back(myVehicleShape);
+
 					// Add the spoiler of the vehicle to the shape vector.
-					newShape = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
-					TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(newShape);
+					TrapezoidPrism * trap = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
 					vehicle->addShape(trap);
+
+					myVehicleShape.type = TRAPEZOIDAL_PRISM;
+					myVehicleShape.xyz[0] = trap->getX();
+					myVehicleShape.xyz[1] = trap->getY();
+					myVehicleShape.xyz[2] = trap->getZ();
+					myVehicleShape.rotation = trap->getRotation();
+
+					myVehicleShape.rgb[0] = trap->getRed();
+					myVehicleShape.rgb[1] = trap->getBlue();
+					myVehicleShape.rgb[2] = trap->getGreen();
+
+					myVehicleShape.params.trap.alen = trap->getA_length();
+					myVehicleShape.params.trap.aoff = trap->getA_offset();
+					myVehicleShape.params.trap.blen = trap->getB_length();
+					myVehicleShape.params.trap.depth = trap->getDepth();
+					myVehicleShape.params.trap.height = trap->getHeight();
 					
-					// Add the front wheels to the shape vector.
-					newShape = new Cylinder(1, 0, -1, steering, 0.75, 1);
-					Cylinder *cyl = dynamic_cast<Cylinder*>(newShape);
+					vm.shapes.push_back(myVehicleShape);
+					
+					// Add the front left wheel to the shape vector.
+					Cylinder * cyl = new Cylinder(1, 0, -1, steering, 0.75, 1);
+					vehicle->addShape(cyl);
+					
+					myVehicleShape.type = CYLINDER;
+					myVehicleShape.xyz[0] = cyl->getX();
+					myVehicleShape.xyz[1] = cyl->getY();
+					myVehicleShape.xyz[2] = cyl->getZ();
+					myVehicleShape.rotation = cyl->getRotation();
+
+					myVehicleShape.rgb[0] = cyl->getRed();
+					myVehicleShape.rgb[1] = cyl->getBlue();
+					myVehicleShape.rgb[2] = cyl->getGreen();
+
+					myVehicleShape.params.cyl.depth = cyl->getDepth();
+					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
+					myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
+					myVehicleShape.params.cyl.radius = cyl->getRadius();
+					
+					vm.shapes.push_back(myVehicleShape);
+
+					// Add the front right wheel to the shape vector.
+					cyl = new Cylinder(1, 0, 1, steering, 0.75, 1);
 					vehicle->addShape(cyl);
 
-					newShape = new Cylinder(1, 0, 1, steering, 0.75, 1);
-					cyl = dynamic_cast<Cylinder*>(newShape);
+					myVehicleShape.type = CYLINDER;
+					myVehicleShape.xyz[0] = cyl->getX();
+					myVehicleShape.xyz[1] = cyl->getY();
+					myVehicleShape.xyz[2] = cyl->getZ();
+					myVehicleShape.rotation = cyl->getRotation();
+
+					myVehicleShape.rgb[0] = cyl->getRed();
+					myVehicleShape.rgb[1] = cyl->getBlue();
+					myVehicleShape.rgb[2] = cyl->getGreen();
+
+					myVehicleShape.params.cyl.depth = cyl->getDepth();
+					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
+					myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
+					myVehicleShape.params.cyl.radius = cyl->getRadius();
+
+					vm.shapes.push_back(myVehicleShape);
+
+					// Add the back left wheel to the shape vector.
+					cyl = new Cylinder(-1, 0, -1, 0, 0.75, 1);
 					vehicle->addShape(cyl);
 
-					// Add the back wheels to the shape vector.
-					newShape = new Cylinder(-1, 0, -1, 0, 0.75, 1);
-					cyl = dynamic_cast<Cylinder*>(newShape);
+					myVehicleShape.type = CYLINDER;
+					myVehicleShape.xyz[0] = cyl->getX();
+					myVehicleShape.xyz[1] = cyl->getY();
+					myVehicleShape.xyz[2] = cyl->getZ();
+					myVehicleShape.rotation = cyl->getRotation();
+
+					myVehicleShape.rgb[0] = cyl->getRed();
+					myVehicleShape.rgb[1] = cyl->getBlue();
+					myVehicleShape.rgb[2] = cyl->getGreen();
+
+					myVehicleShape.params.cyl.depth = cyl->getDepth();
+					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
+					myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
+					myVehicleShape.params.cyl.radius = cyl->getRadius();
+
+					vm.shapes.push_back(myVehicleShape);
+
+					// Add the back right wheel to the shape vector.
+					cyl = new Cylinder(-1, 0, 1, 0, 0.75, 1);
 					vehicle->addShape(cyl);
 
-					newShape = new Cylinder(-1, 0, 1, 0, 0.75, 1);
-					cyl = dynamic_cast<Cylinder*>(newShape);
-					vehicle->addShape(cyl);
+					myVehicleShape.type = CYLINDER;
+					myVehicleShape.xyz[0] = cyl->getX();
+					myVehicleShape.xyz[1] = cyl->getY();
+					myVehicleShape.xyz[2] = cyl->getZ();
+					myVehicleShape.rotation = cyl->getRotation();
+
+					myVehicleShape.rgb[0] = cyl->getRed();
+					myVehicleShape.rgb[1] = cyl->getBlue();
+					myVehicleShape.rgb[2] = cyl->getGreen();
+
+					myVehicleShape.params.cyl.depth = cyl->getDepth();
+					myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
+					myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
+					myVehicleShape.params.cyl.radius = cyl->getRadius();
+
+					vm.shapes.push_back(myVehicleShape);
 
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
@@ -408,14 +536,17 @@ void idle() {
 								// Code written by: Haydn St. James (z5118383)
 
 								// Obtain shapes and dimensions of the vehicles of other users and draw them.
-								// Create a pointer to access information about the vehicles and shapes from the server.
 								for (std::vector<ShapeInit>::iterator it = vm.shapes.begin(); it != vm.shapes.end(); it++) {
+									
+									// Create pointers to access information about the vehicles and shapes from the server.
 									RectangularPrism * rect = new RectangularPrism(0, 0, 0, 0, 0, 0, 0);
-									TriangularPrism *tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
-									TrapezoidPrism *trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
+									TriangularPrism * tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
+									TrapezoidPrism * trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
 									Cylinder * cyl = new Cylinder(0, 0, 0, 0, 0, 0);
 									
+									// ** ADDS RECTANGLES CORRECTLY
 									if (it->type = RECTANGULAR_PRISM) {
+										
 										// Set the dimensions of the obtained shape to what was given by another user.
 										rect->setX_length(it->params.rect.xlen);
 										rect->setY_length(it->params.rect.ylen);
@@ -429,8 +560,13 @@ void idle() {
 										rect->setY(it->xyz[1]);
 										rect->setZ(it->xyz[2]);
 										rect->setRotation(it->rotation);
+
+										// Add the newly defined shape to be drawn into the shape vector 
+										// defined in 'Vehicle.hpp'
 										otherVehicles[vm.remoteID]->addShape(rect);
 									}
+									// ** ADDS TRIANGLES INCORRECTLY, RECEIVES THEM AS REALLY LONG RECTANGLES
+									// ** COLOUR OF TRIANGLES AND TRAPEZOIDS SEEMS TO BE SWAPPED
 									else if (it->type = TRIANGULAR_PRISM) {
 										tri->setA_length(it->params.tri.alen);
 										tri->setTheta(it->params.tri.angle);
@@ -443,8 +579,11 @@ void idle() {
 										tri->setY(it->xyz[1]);
 										tri->setZ(it->xyz[2]);
 										tri->setRotation(it->rotation);
+										
 										otherVehicles[vm.remoteID]->addShape(tri);
 									}
+									// ** ADDS TRAPEZOIDS INCORRECTLY, RECEIVES THEM AS RECTANGLES
+									// ** COLOUR OF TRIANGLES AND TRAPEZOIDS SEEMS TO BE SWAPPED
 									else if (it->type = TRAPEZOIDAL_PRISM) {
 										trap->setA_length(it->params.trap.alen);
 										trap->setA_offset(it->params.trap.aoff);
@@ -458,12 +597,14 @@ void idle() {
 										trap->setY(it->xyz[1]);
 										trap->setZ(it->xyz[2]);
 										trap->setRotation(it->rotation);
+										
 										otherVehicles[vm.remoteID]->addShape(trap);
 									}
+									// ** ADDS CYLINDERS INCORRECTLY, RECEIVES THEM AS RECTANGLES
 									else if (it->type = CYLINDER) {
 										cyl->setRadius(it->params.cyl.radius);
 										cyl->setDepth(it->params.cyl.depth);
-										cyl->setIfRotating(it->params.cyl.isRolling);
+										cyl->setIfRolling(it->params.cyl.isRolling);
 										cyl->setIfSteering(it->params.cyl.isSteering);
 
 										cyl->setColor(it->rgb[0], it->rgb[1], it->rgb[2]);
@@ -472,6 +613,7 @@ void idle() {
 										cyl->setY(it->xyz[1]);
 										cyl->setZ(it->xyz[2]);
 										cyl->setRotation(it->rotation);
+										
 										otherVehicles[vm.remoteID]->addShape(cyl);
 									}
 								}

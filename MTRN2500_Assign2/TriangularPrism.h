@@ -14,9 +14,20 @@ class TriangularPrism : public Shape {
 	public:
 		TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle);
 		void draw();
-		// Functions written by: Haydn St. James (z5118383)
+
+		// Functions below written by: Haydn St. James (z5118383)
+
+		// Functions below are used to set new dimensions for a triangular prism if required (for example, when 
+		// drawing other vehicles from the server).
 		void setA_length(double length_a);
 		void setB_length(double length_b);
 		void setDepth(double length_d);
 		void setTheta(double angle);
+
+		// Functions below are used to obtain the dimensions of a locally instantiated triangular prism to be 
+		// sent to the server. 
+		double getA_length();
+		double getB_length();
+		double getDepth();
+		double getTheta();
 };

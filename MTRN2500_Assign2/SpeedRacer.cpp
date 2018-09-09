@@ -30,6 +30,7 @@ SpeedRacer::SpeedRacer(double x_, double y_, double z_, double rotation_) {
 	rotation = rotation_;
 }
 
+// Iterate through the shape vector defined in 'Vehicle.hpp' and draw all the shapes contained in the vector.
 void SpeedRacer::draw() {
 	// Move to the vehicle’s local frame of reference.
 	glPushMatrix();

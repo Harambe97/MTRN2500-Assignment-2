@@ -14,8 +14,18 @@ class RectangularPrism : public Shape {
 	public:
 		RectangularPrism(double x_, double y_, double z_, double rotation_, double Lx, double Ly, double Lz);
 		void draw();
+
 		// Functions below written by: Haydn St. James (z5118383)
+
+		// Functions below are used to set new dimensions for a rectangular prism if required (for example, when drawing 
+		// other vehicles from the server).
 		void setX_length(double Lx);
 		void setY_length(double Ly);
 		void setZ_length(double Lz);
+
+		// Functions below are used to obtain the dimensions of a locally instantiated rectangular prism 
+		// to be sent to the server. 
+		double getX_length();
+		double getY_length();
+		double getZ_length();
 };

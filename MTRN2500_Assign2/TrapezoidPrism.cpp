@@ -133,3 +133,24 @@ void TrapezoidPrism::setDepth(double Depth) {
 void TrapezoidPrism::setA_offset(double Offset) {
 	a_offset = Offset;
 }
+
+// Functions below are used to obtain the dimensions of a locally instantiated trapezoidal prism to be sent to the server. 
+double TrapezoidPrism::getA_length() {
+	return a_length;
+}
+
+double TrapezoidPrism::getB_length() {
+	return b_length;
+}
+
+double TrapezoidPrism::getHeight() {
+	return height;
+}
+
+double TrapezoidPrism::getDepth() {
+	return depth;
+}
+
+double TrapezoidPrism::getA_offset() {
+	return a_offset;
+}

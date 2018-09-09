@@ -65,12 +65,31 @@ void Cylinder::setDepth(double Depth) {
 	depth = Depth;
 }
 
-// Sets the Boolean variable that defines the rotation of the cylinder about its z - axis.
-void Cylinder::setIfRotating(bool Rotating) {
-	isRotating = Rotating;
+// Functions below are used to set the rolling and steering of cylinders used to define the wheels of a vehicle if required
+// (for example, when drawing other vehicles from the server).
+void Cylinder::setIfRolling(bool Rolling) {
+	isRolling = Rolling;
 }
 
-// Sets the Boolean variable that defines the rotation of the cylinder about its y - axis.
 void Cylinder::setIfSteering(bool Steering) {
 	isSteering = Steering;
+}
+
+// Functions below are used to obtain the dimensions of a locally instantiated cylinder to be sent to the server. 
+double Cylinder::getRadius() {
+	return radius;
+}
+
+double Cylinder::getDepth() {
+	return depth;
+}
+
+// Functions below are used to obtain the steering and rolling of cylinders used to define the wheels of a vehicle to be
+// sent to the server.
+bool Cylinder::getIfRolling() {
+	return isRolling;
+}
+
+bool Cylinder::getIfSteering() {
+	return isSteering;
 }
