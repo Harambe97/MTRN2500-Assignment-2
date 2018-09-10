@@ -38,11 +38,11 @@ void TrapezoidPrism::draw() {
 	double front = -depth / 2;
 	double back = depth / 2;
 	double top = height;
-	double top_left = -((a_length / 2) - a_offset);
-	double top_right = (a_length / 2) - (a_length - a_offset - b_length);
+	double top_left = (a_length / 2) - (a_length - a_offset - b_length);
+	double top_right = -((a_length / 2) - a_offset);
 	double bottom = 0;
-	double bottom_left = -a_length / 2;
-	double bottom_right = a_length / 2;
+	double bottom_left = a_length / 2;
+	double bottom_right = -a_length / 2;
 	
 	glPushMatrix(); // Places the shape to be defined on top of the stack.
 	positionInGL(); // When called, changes the position of the coordinate axes to the values that have been set.
