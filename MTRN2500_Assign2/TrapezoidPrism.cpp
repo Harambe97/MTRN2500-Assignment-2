@@ -110,4 +110,50 @@ void TrapezoidPrism::draw() {
 			glEnd();
 		glPopMatrix();
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.
+<<<<<<< HEAD
+=======
+}
+
+// Functions below are used to set new dimensions for a trapezoidal prism if required (for example, when drawing other 
+// vehicles from the server).
+void TrapezoidPrism::setA_length(double Bottom_length) {
+	a_length = Bottom_length;
+}
+
+void TrapezoidPrism::setB_length(double Top_length) {
+	b_length = Top_length;
+}
+
+void TrapezoidPrism::setHeight(double Height) {
+	height = Height;
+}
+
+void TrapezoidPrism::setDepth(double Depth) {
+	depth = Depth;
+}
+
+void TrapezoidPrism::setA_offset(double Offset) {
+	a_offset = Offset;
+}
+
+// Functions below are used to obtain the dimensions of a locally instantiated trapezoidal prism to be sent to the server. 
+double TrapezoidPrism::getA_length() {
+	return a_length;
+}
+
+double TrapezoidPrism::getB_length() {
+	return b_length;
+}
+
+double TrapezoidPrism::getHeight() {
+	return height;
+}
+
+double TrapezoidPrism::getDepth() {
+	return depth;
+}
+
+double TrapezoidPrism::getA_offset() {
+	return a_offset;
+>>>>>>> z5118383
 }

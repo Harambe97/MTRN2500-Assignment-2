@@ -55,6 +55,7 @@ void Cylinder::draw() {
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.
 }
 
+<<<<<<< HEAD
 // Sets the Boolean variable that defines the rotation of the cylinder about its z - axis to be true.
 bool Cylinder::setIfRotating() {
 	return isRotating = true;
@@ -63,4 +64,43 @@ bool Cylinder::setIfRotating() {
 // Sets the Boolean variable that defines the rotation of the cylinder about its y - axis to be true.
 bool Cylinder::setIfSteering() {
 	return isSteering = true;
+=======
+// Functions below are used to set new dimensions for a cylinder if required (for example, when drawing other 
+// vehicles from the server).
+void Cylinder::setRadius(double Radius) {
+	radius = Radius;
+}
+
+void Cylinder::setDepth(double Depth) {
+	depth = Depth;
+}
+
+// Functions below are used to set the rolling and steering of cylinders used to define the wheels of a vehicle if required
+// (for example, when drawing other vehicles from the server).
+void Cylinder::setIfRolling(bool Rolling) {
+	isRolling = Rolling;
+}
+
+void Cylinder::setIfSteering(bool Steering) {
+	isSteering = Steering;
+}
+
+// Functions below are used to obtain the dimensions of a locally instantiated cylinder to be sent to the server. 
+double Cylinder::getRadius() {
+	return radius;
+}
+
+double Cylinder::getDepth() {
+	return depth;
+}
+
+// Functions below are used to obtain the steering and rolling of cylinders used to define the wheels of a vehicle to be
+// sent to the server.
+bool Cylinder::getIfRolling() {
+	return isRolling;
+}
+
+bool Cylinder::getIfSteering() {
+	return isSteering;
+>>>>>>> z5118383
 }
