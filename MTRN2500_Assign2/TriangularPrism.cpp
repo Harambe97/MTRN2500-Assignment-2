@@ -40,8 +40,8 @@ void TriangularPrism::draw() {
 	double rad = theta * (PI/180); 
 	//to calculate the height of the triangle
 	double height = b_length*sin(rad);
-	//to calculate the x coordinate for the third point.
-	double front = -(a_length / 2) + height * cos(rad);
+	//to calculate the x coordinate for the point of the triangle.
+	double triangle_point = -(a_length / 2) + height * cos(rad);
 
 	glPushMatrix(); //pushes the current matrix stack down by one, duplicating the current matrix
 	positionInGL(); //sets the position
@@ -52,7 +52,7 @@ void TriangularPrism::draw() {
 			glBegin(GL_TRIANGLES); //defines an enclosed shape with 3 vertices
 				glVertex3f(a_length/2, 0, -depth/2);
 				glVertex3f(-a_length/2, 0, -depth/2);
-				glVertex3f(front, height, -depth/2);
+				glVertex3f(triangle_point, height, -depth/2);
 			glEnd();
 		glPopMatrix(); //pops the current matrix stack, replacing the current matrix with the one below it on the stack.
 
@@ -61,7 +61,7 @@ void TriangularPrism::draw() {
 			glBegin(GL_TRIANGLES);
 				glVertex3f(a_length / 2, 0, depth / 2);
 				glVertex3f(-a_length / 2, 0, depth / 2);
-				glVertex3f(front, height, depth / 2);
+				glVertex3f(triangle_point, height, depth / 2);
 			glEnd();
 		glPopMatrix();
 
@@ -69,8 +69,8 @@ void TriangularPrism::draw() {
 		glPushMatrix();
 			glBegin(GL_QUADS);
 				glVertex3f(a_length / 2, 0, -depth / 2);
-				glVertex3f(front, height, -depth / 2);
-				glVertex3f(front, height, depth / 2);
+				glVertex3f(triangle_point, height, -depth / 2);
+				glVertex3f(triangle_point, height, depth / 2);
 				glVertex3f(a_length / 2, 0, depth / 2);
 			glEnd();
 		glPopMatrix();
@@ -80,8 +80,8 @@ void TriangularPrism::draw() {
 		glPushMatrix();
 			glBegin(GL_QUADS);
 				glVertex3f(-a_length / 2, 0, -depth / 2);
-				glVertex3f(front, height, -depth / 2);
-				glVertex3f(front, height, depth / 2);
+				glVertex3f(triangle_point, height, -depth / 2);
+				glVertex3f(triangle_point, height, depth / 2);
 				glVertex3f(-a_length / 2, 0, depth / 2);
 			glEnd();
 		glPopMatrix();
