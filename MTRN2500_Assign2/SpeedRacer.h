@@ -1,5 +1,6 @@
 #pragma once
 #include "Vehicle.hpp"
+#include "Messages.hpp"
 
 // Code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
 

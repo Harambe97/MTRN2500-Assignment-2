@@ -15,8 +15,6 @@ class TrapezoidPrism : public Shape {
 	public:
 		TrapezoidPrism(double x_, double y_, double z_, double rotation_, double Bottom_length, double Top_length, double Height, double Depth, double Offset);
 		void draw();
-<<<<<<< HEAD
-=======
 
 		// Functions below are used to set new dimensions for a trapezoidal prism if required (for example, when drawing other 
 		// vehicles from the server).
@@ -33,5 +31,4 @@ class TrapezoidPrism : public Shape {
 		double getHeight();
 		double getDepth();
 		double getA_offset();
->>>>>>> z5118383
 };

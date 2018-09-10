@@ -14,8 +14,6 @@ class TriangularPrism : public Shape {
 	public:
 		TriangularPrism(double x_, double y_, double z_, double rotation_, double length_a, double length_b, double length_d, double angle);
 		void draw();
-<<<<<<< HEAD
-=======
 
 		// Functions below written by: Haydn St. James (z5118383)
 
@@ -32,5 +30,4 @@ class TriangularPrism : public Shape {
 		double getB_length();
 		double getDepth();
 		double getTheta();
->>>>>>> z5118383
 };

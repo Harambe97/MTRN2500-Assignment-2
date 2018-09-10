@@ -38,11 +38,11 @@ void TrapezoidPrism::draw() {
 	double front = -depth / 2;
 	double back = depth / 2;
 	double top = height;
-	double top_left = (a_length / 2) - a_offset;
-	double top_right = -((a_length / 2) - (a_length - a_offset - b_length));
+	double top_left = -((a_length / 2) - a_offset);
+	double top_right = (a_length / 2) - (a_length - a_offset - b_length);
 	double bottom = 0;
-	double bottom_left = a_length / 2;
-	double bottom_right = -a_length / 2;
+	double bottom_left = -a_length / 2;
+	double bottom_right = a_length / 2;
 	
 	glPushMatrix(); // Places the shape to be defined on top of the stack.
 	positionInGL(); // When called, changes the position of the coordinate axes to the values that have been set.
@@ -110,8 +110,6 @@ void TrapezoidPrism::draw() {
 			glEnd();
 		glPopMatrix();
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.
-<<<<<<< HEAD
-=======
 }
 
 // Functions below are used to set new dimensions for a trapezoidal prism if required (for example, when drawing other 
@@ -155,5 +153,4 @@ double TrapezoidPrism::getDepth() {
 
 double TrapezoidPrism::getA_offset() {
 	return a_offset;
->>>>>>> z5118383
 }

@@ -36,100 +36,31 @@ void SpeedRacer::draw() {
 	glPushMatrix();
 		positionInGL();
 
-			// Instantiate the shapes that were derived from the shape class and draw the shapes relative to the vehicle's
-			// local frame of reference. Each shape was given a name to represent their function/location on the vehicle.
-			/*RectangularPrism Body(0, 0, 0, 90, 2, 2, 4);
-			Body.draw();
-			TriangularPrism Bumper(3, 0, 0, 0, 2, 2, 2, 90);
-			Bumper.draw();
-			TrapezoidPrism Spoiler(-2, 2, 0, 0, 2, 2, 1, 2, 1);
-			Spoiler.draw();
-
-			// Set the rotation of the front wheels about their respective y - axes to be equal to the steering angle.
-			Cylinder FrontWheelLeft(1, 0, -1, steering, 0.75, 1);
-			FrontWheelLeft.draw();
-			Cylinder FrontWheelRight(1, 0, 1, steering, 0.75, 1);
-			FrontWheelRight.draw();
-			Cylinder BackWheelLeft(-1, 0, -1, 0, 0.75, 1);
-			BackWheelLeft.draw();
-			Cylinder BackWheelRight(-1, 0, 1, 0, 0.75, 1);
-<<<<<<< HEAD
-			BackWheelRight.draw();
-			
-			// Check if the vehicle is moving forward or backward. If yes, set that the cylinders representing the wheels
-			// are rotating using the variable 'isRotating' in 'Cylinder.h'.
-			if (speed != 0) {
-				FrontWheelLeft.setIfRotating();
-				FrontWheelRight.setIfRotating();
-				BackWheelLeft.setIfRotating();
-				BackWheelRight.setIfRotating();
-=======
-			BackWheelRight.draw();*/
-
-			/*Shape * newShape = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
-			// Dynamic cast to convert from shape pointer into the respective shape pointer.
-			RectangularPrism *rect = dynamic_cast<RectangularPrism*>(newShape);
+			/*RectangularPrism *rect = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
 			SpeedRacer::addShape(rect);
 
-			newShape = new TriangularPrism (3, 0, 0, 0, 2, 2, 2, 90);
-			TriangularPrism *tri = dynamic_cast<TriangularPrism*>(newShape);
+			TriangularPrism *tri = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
 			SpeedRacer::addShape(tri);
 
-			newShape = new TrapezoidPrism(-2, 2, 0, 0, 2, 2, 1, 2, 1);
-			TrapezoidPrism *trap = dynamic_cast<TrapezoidPrism*>(newShape);
+			TrapezoidPrism *trap = new TrapezoidPrism(-2, 2, 0, 180, 2, 2, 1, 2, 1);
 			SpeedRacer::addShape(trap);
 
-			newShape = new Cylinder(1, 0, -1, steering, 0.75, 1);
-			Cylinder *cyl = dynamic_cast<Cylinder*>(newShape);
+			Cylinder *cyl = new Cylinder(1, 0, -1, steering, 0.75, 1);
 			SpeedRacer::addShape(cyl);
 
-			newShape = new Cylinder(1, 0, 1, steering, 0.75, 1);
-			cyl = dynamic_cast<Cylinder*>(newShape);
+			cyl = new Cylinder(1, 0, 1, steering, 0.75, 1);
 			SpeedRacer::addShape(cyl);
 
-			newShape = new Cylinder(-1, 0, -1, 0, 0.75, 1);
-			cyl = dynamic_cast<Cylinder*>(newShape);
+			cyl = new Cylinder(-1, 0, -1, 0, 0.75, 1);
 			SpeedRacer::addShape(cyl);
 
-			newShape = new Cylinder(-1, 0, 1, 0, 0.75, 1);
-			cyl = dynamic_cast<Cylinder*>(newShape);
+			cyl = new Cylinder(-1, 0, 1, 0, 0.75, 1);
 			SpeedRacer::addShape(cyl);*/
 
 			for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
 				(*it)->draw();
 			}
-			
-			// Check if the vehicle is moving forward or backward. If yes, set that the cylinders representing the wheels
-			// are rotating using the variable 'isRotating' in 'Cylinder.h'.
-			/*if (speed != 0) {
-				FrontWheelLeft.setIfRotating(true);
-				FrontWheelRight.setIfRotating(true);
-				BackWheelLeft.setIfRotating(true);
-				BackWheelRight.setIfRotating(true);
-			}
-			else {
-				FrontWheelLeft.setIfRotating(false);
-				FrontWheelRight.setIfRotating(false);
-				BackWheelLeft.setIfRotating(false);
-				BackWheelRight.setIfRotating(false);
->>>>>>> z5118383
-			}
-
-			// Check if the vehicle is steering left or right. If yes, set that the cylinders representing the front wheels
-			// are steering using the variable 'isSteering' in 'Cylinder.h'.
-			if (steering != 0) {
-<<<<<<< HEAD
-				FrontWheelLeft.setIfSteering();
-				FrontWheelRight.setIfSteering();
-=======
-				FrontWheelLeft.setIfSteering(true);
-				FrontWheelRight.setIfSteering(true);
->>>>>>> z5118383
-			}
-			else {
-				FrontWheelLeft.setIfSteering(false);
-				FrontWheelRight.setIfSteering(false);
-			}*/
+			//shapes.clear();
 
 	// Move back to global frame of reference.
 	glPopMatrix();
