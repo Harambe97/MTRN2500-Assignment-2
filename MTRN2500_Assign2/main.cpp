@@ -220,7 +220,7 @@ void display() {
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
 	// (function definition around line 168)
-	//DrawTest();
+	DrawTest();
 	
 	glutSwapBuffers();
 };
@@ -490,10 +490,21 @@ void keydown(unsigned char key, int x, int y) {
 		break;
 	// Challenge: Press 'L' to give chase to the server vehicle with vehicle ID 1.
 	/*case 'l':
-		VehicleState ServerVehicle;
 		Camera::get()->togglePursuitMode();
-		if (ServerVehicle.remoteID == 1) {
-			vehicle.setSpeed();
+
+		std::vector<RemoteMessage> msgs = RemoteDataManager::Read();
+
+		for (unsigned int i = 0; i < msgs.size(); i++) {
+			RemoteMessage msg = msgs[i];
+			
+			std::vector<VehicleModel> models = GetVehicleModels(msg.payload);
+			
+			for (unsigned int i = 0; i < models.size(); i++) {
+				VehicleModel vm = models[i];
+				if (vm.remoteID == 1) {
+					
+				}
+			}
 		}
 		break;*/
 	}

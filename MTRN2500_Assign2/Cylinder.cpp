@@ -23,6 +23,8 @@
 Cylinder::Cylinder(double x_, double y_, double z_, double rotation_, double Radius, double Depth):Shape(x_, y_, z_, rotation_) {
 	radius = Radius;
 	depth = Depth;
+	isRolling = false;
+	isSteering = false;
 }
 
 // Take note that the coordinate axes and rotations follow a left - handed convention.

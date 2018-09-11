@@ -21,18 +21,19 @@
 
 // Code written by: Haydn St. James (z5118383)
 
-// Default constructor for the custom vehicle that sends the dimensions of the vehicle to the server and then retrieves
-// that information back to instantiate a local custom vehicle.
+// Default constructor for the custom vehicle that sends the dimensions of the vehicle to the server and adds defined
+// shapes to the shape vector to instantiate a local custom vehicle.
 SpeedRacer::SpeedRacer() {
 	
 	// Any shapes to be sent to the server follow the same procedure as the rectangular prism below:
 
 	// Send the body of the vehicle to the server.
 	// Create a pointer to the instantiated shape to be sent to the server.
+	// Add the instantiated shape to the shape vector defined in 'Vehicle.hpp'.
 	RectangularPrism * rect = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+	addShape(rect);
 
-	// Instantiate 'ShapeInit' to send information to the 'ShapeInit' data structure 
-	// defined in 'Messages.hpp'.
+	// Instantiate 'ShapeInit' to send information to the 'ShapeInit' data structure defined in 'Messages.hpp'.
 	ShapeInit myVehicleShape;
 
 	// Send the type of the previously instantiated shape to the server.
@@ -54,12 +55,13 @@ SpeedRacer::SpeedRacer() {
 	myVehicleShape.params.rect.ylen = rect->getY_length();
 	myVehicleShape.params.rect.zlen = rect->getZ_length();
 
-	// Add the previously instantiated shape to the 'ShapeInit' vector in the 'VehicleModel'
-	// data structure defined in 'Messages.hpp'.
+	// Add the previously instantiated shape to the 'ShapeInit' vector in the 'VehicleModel' data structure 
+	// defined in 'Messages.hpp'.
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the bumper of the vehicle to the server.
 	TriangularPrism * tri = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
+	addShape(tri);
 
 	myVehicleShape.type = TRIANGULAR_PRISM;
 	myVehicleShape.xyz[0] = tri->getX();
@@ -80,6 +82,7 @@ SpeedRacer::SpeedRacer() {
 
 	// Send the spoiler of the vehicle to the server.
 	TrapezoidPrism * trap = new TrapezoidPrism(-2, 2, 0, 180, 2, 2, 1, 2, 1);
+	addShape(trap);
 
 	myVehicleShape.type = TRAPEZOIDAL_PRISM;
 	myVehicleShape.xyz[0] = trap->getX();
@@ -101,6 +104,7 @@ SpeedRacer::SpeedRacer() {
 
 	// Send the front left wheel to the server.
 	Cylinder * cyl = new Cylinder(1, 0, -1, steering, 0.75, 1);
+	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
 	myVehicleShape.xyz[0] = cyl->getX();
@@ -121,6 +125,7 @@ SpeedRacer::SpeedRacer() {
 
 	// Send the front right wheel to the server.
 	cyl = new Cylinder(1, 0, 1, steering, 0.75, 1);
+	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
 	myVehicleShape.xyz[0] = cyl->getX();
@@ -141,6 +146,7 @@ SpeedRacer::SpeedRacer() {
 
 	// Send the back left wheel to the server.
 	cyl = new Cylinder(-1, 0, -1, 0, 0.75, 1);
+	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
 	myVehicleShape.xyz[0] = cyl->getX();
@@ -161,6 +167,7 @@ SpeedRacer::SpeedRacer() {
 
 	// Send the back right wheel to the server.
 	cyl = new Cylinder(-1, 0, 1, 0, 0.75, 1);
+	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
 	myVehicleShape.xyz[0] = cyl->getX();
@@ -178,26 +185,17 @@ SpeedRacer::SpeedRacer() {
 	myVehicleShape.params.cyl.radius = cyl->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
-
-	// Set/add the shapes defined above to the shape vector defined in 'Vehicle.hpp'.
-	setShapes(&CustomVehicle);
 }
 
 // Overload constructor to instantiate remote vehicles from the server.
 SpeedRacer::SpeedRacer(struct VehicleModel * RemoteVehicles) {
-	setShapes(RemoteVehicles);
-}
-
-// Obtain shapes and dimensions of vehicles from the server and set/add the shapes used to define those vehicles into the
-// shape vector defined in 'Vehicle.hpp'.
-void SpeedRacer::setShapes(struct VehicleModel * ServerVehicleModels) {
 	
 	// Iterate through the 'ShapeInit' vector defined in 'Messages.hpp' to obtain information about vehicles in the server.
-	for (std::vector<ShapeInit>::iterator it = ServerVehicleModels->shapes.begin(); it != ServerVehicleModels->shapes.end(); it++) {
+	for (std::vector<ShapeInit>::iterator it = RemoteVehicles->shapes.begin(); it != RemoteVehicles->shapes.end(); it++) {
 		if (it->type == RECTANGULAR_PRISM) {
 
-			// Create a pointer to access information about the current vehicle and the
-			// shapes used to define it from the server.
+			// Create a pointer to access information about the current vehicle and the shapes used to define it from 
+			// the server.
 			RectangularPrism * rect = new RectangularPrism(0, 0, 0, 0, 0, 0, 0);
 
 			// Set the dimensions of the obtained shape to what was given by a user.
@@ -214,8 +212,7 @@ void SpeedRacer::setShapes(struct VehicleModel * ServerVehicleModels) {
 			rect->setZ(it->xyz[2]);
 			rect->setRotation(it->rotation);
 
-			// Add the newly defined shape to be drawn into the shape vector 
-			// defined in 'Vehicle.hpp'
+			// Add the newly defined shape to be drawn into the shape vector defined in 'Vehicle.hpp'
 			addShape(rect);
 		}
 		else if (it->type == TRIANGULAR_PRISM) {

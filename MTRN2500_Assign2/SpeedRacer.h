@@ -11,8 +11,6 @@ class SpeedRacer : public Vehicle {
 	public:
 		SpeedRacer(); // Default constructor to instantiate the local vehicle.
 		SpeedRacer(struct VehicleModel * RemoteVehicles); // Overload constructor to instantiate remote vehicles.
-		void setShapes(struct VehicleModel * ServerVehicleModels); // Set/add the shapes from the server to the shape 
-																   // vector defined in 'Vehicle.hpp'.
 		void draw();
-		VehicleModel * getCustomVehicleModel(); // Obtains the model of the local vehicle.
+		VehicleModel * getCustomVehicleModel(); // Obtains the memory address for the model of the local vehicle.
 };
