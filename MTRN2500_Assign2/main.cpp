@@ -488,7 +488,7 @@ void keydown(unsigned char key, int x, int y) {
 	case 'p':
 		Camera::get()->togglePursuitMode();
 		break;
-	// Challenge: Press 'L' to give chase to the server vehicle with vehicle ID 1.
+	// Challenge: Press 'l' to give chase to the server vehicle with vehicle ID 1.
 	/*case 'l':
 		Camera::get()->togglePursuitMode();
 

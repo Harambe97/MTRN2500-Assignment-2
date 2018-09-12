@@ -103,7 +103,7 @@ SpeedRacer::SpeedRacer() {
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the front left wheel to the server.
-	Cylinder * cyl = new Cylinder(1, 0, -1, steering, 0.75, 1);
+	Cylinder * cyl = new Cylinder(1, 0, -1, 0, 0.75, 1);
 	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
@@ -124,7 +124,7 @@ SpeedRacer::SpeedRacer() {
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the front right wheel to the server.
-	cyl = new Cylinder(1, 0, 1, steering, 0.75, 1);
+	cyl = new Cylinder(1, 0, 1, 0, 0.75, 1);
 	addShape(cyl);
 
 	myVehicleShape.type = CYLINDER;
@@ -188,7 +188,7 @@ SpeedRacer::SpeedRacer() {
 }
 
 // Overload constructor to instantiate remote vehicles from the server.
-SpeedRacer::SpeedRacer(struct VehicleModel * RemoteVehicles) {
+SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 	
 	// Iterate through the 'ShapeInit' vector defined in 'Messages.hpp' to obtain information about vehicles in the server.
 	for (std::vector<ShapeInit>::iterator it = RemoteVehicles->shapes.begin(); it != RemoteVehicles->shapes.end(); it++) {
@@ -272,11 +272,43 @@ SpeedRacer::SpeedRacer(struct VehicleModel * RemoteVehicles) {
 
 // Iterate through the shape vector defined in 'Vehicle.hpp' and draw all the shapes contained in the vector.
 void SpeedRacer::draw() {
-
+	
 	// Move to the vehicle’s local frame of reference.
 	glPushMatrix();
 		positionInGL();
+
+			// Variable to check how many wheels were found in the shape vector.
+			int numWheels = 0;
+
 			for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
+				
+				// Dynamic cast the iterator to be a pointer of type cylinder.
+				Cylinder * cyl = dynamic_cast<Cylinder *>(*it);
+				
+				if (cyl != NULL) {
+					
+					// Check that the dynamic cast succeeded and set the rotations of the 2 front wheels to be equal to 
+					// the steering angle if the steering angle is non - zero.
+					if (steering != 0) {
+						if (numWheels < 2) {
+							cyl->setIfSteering(true);
+							cyl->setRotation(steering);
+							numWheels++;
+						}
+					}
+					else {
+						cyl->setIfSteering(false);
+					}
+
+					// Similarly, check if the speed is non - zero. If yes, allow the wheels to roll.
+					// ** NEED TO IMPLEMENT
+					if (speed != 0) {
+						cyl->setIfRolling(true);
+					}
+					else {
+						cyl->setIfRolling(false);
+					}
+				}
 				(*it)->draw();
 			}
 

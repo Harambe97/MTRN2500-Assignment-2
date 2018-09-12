@@ -10,7 +10,7 @@ class SpeedRacer : public Vehicle {
 		VehicleModel CustomVehicle;
 	public:
 		SpeedRacer(); // Default constructor to instantiate the local vehicle.
-		SpeedRacer(struct VehicleModel * RemoteVehicles); // Overload constructor to instantiate remote vehicles.
+		SpeedRacer(VehicleModel * RemoteVehicles); // Overload constructor to instantiate remote vehicles.
 		void draw();
 		VehicleModel * getCustomVehicleModel(); // Obtains the memory address for the model of the local vehicle.
 };
