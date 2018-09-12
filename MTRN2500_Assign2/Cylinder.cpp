@@ -39,20 +39,20 @@ void Cylinder::draw() {
 		glPushMatrix(); // Places the surface to be defined on top of the stack.
 			glTranslated(0, radius, -depth / 2); // Set the cylinder to rest with its circumference on the 'floor' of the
 												 // digital world, halfway along its depth at the origin of the coordinate axes.
-			gluCylinder(CylinderQuadric, radius, radius, depth, 20, 1); // Draw using the in - built OpenGL cylinder function.
+			gluCylinder(CylinderQuadric, radius, radius, depth, 5, 1); // Draw using the in - built OpenGL cylinder function.
 		glPopMatrix(); // Pops the defined surface off the stack, will reset origin.
 
 		// Draw the front face.
 		glPushMatrix(); 
 			glTranslated(0, radius, -depth / 2); // Set the front face to rest with its circumference on the 'floor' of the 
 												 // digital world. Similarly done for the back face of the cylinder.
-			gluDisk(CylinderQuadric, 0, radius, 20, 1); // Draw using the in - built OpenGL disk function.
+			gluDisk(CylinderQuadric, 0, radius, 5, 1); // Draw using the in - built OpenGL disk function.
 		glPopMatrix();
 
 		// Draw the back face.
 		glPushMatrix();
 			glTranslated(0, radius, depth / 2);
-			gluDisk(CylinderQuadric, 0, radius, 20, 1);
+			gluDisk(CylinderQuadric, 0, radius, 5, 1);
 		glPopMatrix();
 	glPopMatrix(); // Pops the defined shape off the stack, will reset origin.
 }

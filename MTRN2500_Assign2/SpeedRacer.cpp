@@ -19,7 +19,7 @@
 #include <GL/glut.h>
 #endif
 
-// Code written by: Haydn St. James (z5118383)
+// Code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
 
 // Default constructor for the custom vehicle that sends the dimensions of the vehicle to the server and adds defined
 // shapes to the shape vector to instantiate a local custom vehicle.
@@ -30,8 +30,8 @@ SpeedRacer::SpeedRacer() {
 	// Send the body of the vehicle to the server.
 	// Create a pointer to the instantiated shape to be sent to the server.
 	// Add the instantiated shape to the shape vector defined in 'Vehicle.hpp'.
-	RectangularPrism * rect = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
-	addShape(rect);
+	Body = new RectangularPrism(0, 0, 0, 90, 2, 2, 4);
+	addShape(Body);
 
 	// Instantiate 'ShapeInit' to send information to the 'ShapeInit' data structure defined in 'Messages.hpp'.
 	ShapeInit myVehicleShape;
@@ -40,151 +40,161 @@ SpeedRacer::SpeedRacer() {
 	myVehicleShape.type = RECTANGULAR_PRISM;
 
 	// Send the position of the previously instantiated shape to the server.
-	myVehicleShape.xyz[0] = rect->getX();
-	myVehicleShape.xyz[1] = rect->getY();
-	myVehicleShape.xyz[2] = rect->getZ();
-	myVehicleShape.rotation = rect->getRotation();
+	myVehicleShape.xyz[0] = Body->getX();
+	myVehicleShape.xyz[1] = Body->getY();
+	myVehicleShape.xyz[2] = Body->getZ();
+	myVehicleShape.rotation = Body->getRotation();
 
 	// Send the colour of the previously instantiated shape to the server.
-	myVehicleShape.rgb[0] = rect->getRed();
-	myVehicleShape.rgb[1] = rect->getGreen();
-	myVehicleShape.rgb[2] = rect->getBlue();
+	myVehicleShape.rgb[0] = Body->getRed();
+	myVehicleShape.rgb[1] = Body->getGreen();
+	myVehicleShape.rgb[2] = Body->getBlue();
 
 	// Send the dimensions of the previously instantiated shape to the server.
-	myVehicleShape.params.rect.xlen = rect->getX_length();
-	myVehicleShape.params.rect.ylen = rect->getY_length();
-	myVehicleShape.params.rect.zlen = rect->getZ_length();
+	myVehicleShape.params.rect.xlen = Body->getX_length();
+	myVehicleShape.params.rect.ylen = Body->getY_length();
+	myVehicleShape.params.rect.zlen = Body->getZ_length();
 
 	// Add the previously instantiated shape to the 'ShapeInit' vector in the 'VehicleModel' data structure 
 	// defined in 'Messages.hpp'.
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the bumper of the vehicle to the server.
-	TriangularPrism * tri = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
-	addShape(tri);
+	Bumper = new TriangularPrism(3, 0, 0, 0, 2, 2, 2, 90);
+	addShape(Bumper);
 
 	myVehicleShape.type = TRIANGULAR_PRISM;
-	myVehicleShape.xyz[0] = tri->getX();
-	myVehicleShape.xyz[1] = tri->getY();
-	myVehicleShape.xyz[2] = tri->getZ();
-	myVehicleShape.rotation = tri->getRotation();
+	myVehicleShape.xyz[0] = Bumper->getX();
+	myVehicleShape.xyz[1] = Bumper->getY();
+	myVehicleShape.xyz[2] = Bumper->getZ();
+	myVehicleShape.rotation = Bumper->getRotation();
 
-	myVehicleShape.rgb[0] = tri->getRed();
-	myVehicleShape.rgb[1] = tri->getGreen();
-	myVehicleShape.rgb[2] = tri->getBlue();
+	myVehicleShape.rgb[0] = Bumper->getRed();
+	myVehicleShape.rgb[1] = Bumper->getGreen();
+	myVehicleShape.rgb[2] = Bumper->getBlue();
 
-	myVehicleShape.params.tri.alen = tri->getA_length();
-	myVehicleShape.params.tri.angle = tri->getTheta();
-	myVehicleShape.params.tri.blen = tri->getB_length();
-	myVehicleShape.params.tri.depth = tri->getDepth();
+	myVehicleShape.params.tri.alen = Bumper->getA_length();
+	myVehicleShape.params.tri.angle = Bumper->getTheta();
+	myVehicleShape.params.tri.blen = Bumper->getB_length();
+	myVehicleShape.params.tri.depth = Bumper->getDepth();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the spoiler of the vehicle to the server.
-	TrapezoidPrism * trap = new TrapezoidPrism(-2, 2, 0, 180, 2, 2, 1, 2, 1);
-	addShape(trap);
+	Spoiler = new TrapezoidPrism(-2, 2, 0, 180, 2, 2, 1, 2, 1);
+	addShape(Spoiler);
 
 	myVehicleShape.type = TRAPEZOIDAL_PRISM;
-	myVehicleShape.xyz[0] = trap->getX();
-	myVehicleShape.xyz[1] = trap->getY();
-	myVehicleShape.xyz[2] = trap->getZ();
-	myVehicleShape.rotation = trap->getRotation();
+	myVehicleShape.xyz[0] = Spoiler->getX();
+	myVehicleShape.xyz[1] = Spoiler->getY();
+	myVehicleShape.xyz[2] = Spoiler->getZ();
+	myVehicleShape.rotation = Spoiler->getRotation();
 
-	myVehicleShape.rgb[0] = trap->getRed();
-	myVehicleShape.rgb[1] = trap->getGreen();
-	myVehicleShape.rgb[2] = trap->getBlue();
+	myVehicleShape.rgb[0] = Spoiler->getRed();
+	myVehicleShape.rgb[1] = Spoiler->getGreen();
+	myVehicleShape.rgb[2] = Spoiler->getBlue();
 
-	myVehicleShape.params.trap.alen = trap->getA_length();
-	myVehicleShape.params.trap.aoff = trap->getA_offset();
-	myVehicleShape.params.trap.blen = trap->getB_length();
-	myVehicleShape.params.trap.depth = trap->getDepth();
-	myVehicleShape.params.trap.height = trap->getHeight();
+	myVehicleShape.params.trap.alen = Spoiler->getA_length();
+	myVehicleShape.params.trap.aoff = Spoiler->getA_offset();
+	myVehicleShape.params.trap.blen = Spoiler->getB_length();
+	myVehicleShape.params.trap.depth = Spoiler->getDepth();
+	myVehicleShape.params.trap.height = Spoiler->getHeight();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the front left wheel to the server.
-	Cylinder * cyl = new Cylinder(1, 0, -1, 0, 0.75, 1);
-	addShape(cyl);
+	FrontLeftWheel = new Cylinder(1, 0, -1, 0, 0.75, 1);
+	addShape(FrontLeftWheel);
 
 	myVehicleShape.type = CYLINDER;
-	myVehicleShape.xyz[0] = cyl->getX();
-	myVehicleShape.xyz[1] = cyl->getY();
-	myVehicleShape.xyz[2] = cyl->getZ();
-	myVehicleShape.rotation = cyl->getRotation();
+	myVehicleShape.xyz[0] = FrontLeftWheel->getX();
+	myVehicleShape.xyz[1] = FrontLeftWheel->getY();
+	myVehicleShape.xyz[2] = FrontLeftWheel->getZ();
+	myVehicleShape.rotation = FrontLeftWheel->getRotation();
 
-	myVehicleShape.rgb[0] = cyl->getRed();
-	myVehicleShape.rgb[1] = cyl->getGreen();
-	myVehicleShape.rgb[2] = cyl->getBlue();
+	myVehicleShape.rgb[0] = FrontLeftWheel->getRed();
+	myVehicleShape.rgb[1] = FrontLeftWheel->getGreen();
+	myVehicleShape.rgb[2] = FrontLeftWheel->getBlue();
 
-	myVehicleShape.params.cyl.depth = cyl->getDepth();
-	myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
-	myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
-	myVehicleShape.params.cyl.radius = cyl->getRadius();
+	myVehicleShape.params.cyl.depth = FrontLeftWheel->getDepth();
+	myVehicleShape.params.cyl.isRolling = FrontLeftWheel->getIfRolling();
+	myVehicleShape.params.cyl.isSteering = FrontLeftWheel->getIfSteering();
+	myVehicleShape.params.cyl.radius = FrontLeftWheel->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the front right wheel to the server.
-	cyl = new Cylinder(1, 0, 1, 0, 0.75, 1);
-	addShape(cyl);
+	FrontRightWheel = new Cylinder(1, 0, 1, 0, 0.75, 1);
+	addShape(FrontRightWheel);
 
 	myVehicleShape.type = CYLINDER;
-	myVehicleShape.xyz[0] = cyl->getX();
-	myVehicleShape.xyz[1] = cyl->getY();
-	myVehicleShape.xyz[2] = cyl->getZ();
-	myVehicleShape.rotation = cyl->getRotation();
+	myVehicleShape.xyz[0] = FrontRightWheel->getX();
+	myVehicleShape.xyz[1] = FrontRightWheel->getY();
+	myVehicleShape.xyz[2] = FrontRightWheel->getZ();
+	myVehicleShape.rotation = FrontRightWheel->getRotation();
 
-	myVehicleShape.rgb[0] = cyl->getRed();
-	myVehicleShape.rgb[1] = cyl->getGreen();
-	myVehicleShape.rgb[2] = cyl->getBlue();
+	myVehicleShape.rgb[0] = FrontRightWheel->getRed();
+	myVehicleShape.rgb[1] = FrontRightWheel->getGreen();
+	myVehicleShape.rgb[2] = FrontRightWheel->getBlue();
 
-	myVehicleShape.params.cyl.depth = cyl->getDepth();
-	myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
-	myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
-	myVehicleShape.params.cyl.radius = cyl->getRadius();
+	myVehicleShape.params.cyl.depth = FrontRightWheel->getDepth();
+	myVehicleShape.params.cyl.isRolling = FrontRightWheel->getIfRolling();
+	myVehicleShape.params.cyl.isSteering = FrontRightWheel->getIfSteering();
+	myVehicleShape.params.cyl.radius = FrontRightWheel->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the back left wheel to the server.
-	cyl = new Cylinder(-1, 0, -1, 0, 0.75, 1);
-	addShape(cyl);
+	BackLeftWheel = new Cylinder(-1, 0, -1, 0, 0.75, 1);
+	addShape(BackLeftWheel);
 
 	myVehicleShape.type = CYLINDER;
-	myVehicleShape.xyz[0] = cyl->getX();
-	myVehicleShape.xyz[1] = cyl->getY();
-	myVehicleShape.xyz[2] = cyl->getZ();
-	myVehicleShape.rotation = cyl->getRotation();
+	myVehicleShape.xyz[0] = BackLeftWheel->getX();
+	myVehicleShape.xyz[1] = BackLeftWheel->getY();
+	myVehicleShape.xyz[2] = BackLeftWheel->getZ();
+	myVehicleShape.rotation = BackLeftWheel->getRotation();
 
-	myVehicleShape.rgb[0] = cyl->getRed();
-	myVehicleShape.rgb[1] = cyl->getGreen();
-	myVehicleShape.rgb[2] = cyl->getBlue();
+	myVehicleShape.rgb[0] = BackLeftWheel->getRed();
+	myVehicleShape.rgb[1] = BackLeftWheel->getGreen();
+	myVehicleShape.rgb[2] = BackLeftWheel->getBlue();
 
-	myVehicleShape.params.cyl.depth = cyl->getDepth();
-	myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
-	myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
-	myVehicleShape.params.cyl.radius = cyl->getRadius();
+	myVehicleShape.params.cyl.depth = BackLeftWheel->getDepth();
+	myVehicleShape.params.cyl.isRolling = BackLeftWheel->getIfRolling();
+	myVehicleShape.params.cyl.isSteering = BackLeftWheel->getIfSteering();
+	myVehicleShape.params.cyl.radius = BackLeftWheel->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
 
 	// Send the back right wheel to the server.
-	cyl = new Cylinder(-1, 0, 1, 0, 0.75, 1);
-	addShape(cyl);
+	BackRightWheel = new Cylinder(-1, 0, 1, 0, 0.75, 1);
+	addShape(BackRightWheel);
 
 	myVehicleShape.type = CYLINDER;
-	myVehicleShape.xyz[0] = cyl->getX();
-	myVehicleShape.xyz[1] = cyl->getY();
-	myVehicleShape.xyz[2] = cyl->getZ();
-	myVehicleShape.rotation = cyl->getRotation();
+	myVehicleShape.xyz[0] = BackRightWheel->getX();
+	myVehicleShape.xyz[1] = BackRightWheel->getY();
+	myVehicleShape.xyz[2] = BackRightWheel->getZ();
+	myVehicleShape.rotation = BackRightWheel->getRotation();
 
-	myVehicleShape.rgb[0] = cyl->getRed();
-	myVehicleShape.rgb[1] = cyl->getGreen();
-	myVehicleShape.rgb[2] = cyl->getBlue();
+	myVehicleShape.rgb[0] = BackRightWheel->getRed();
+	myVehicleShape.rgb[1] = BackRightWheel->getGreen();
+	myVehicleShape.rgb[2] = BackRightWheel->getBlue();
 
-	myVehicleShape.params.cyl.depth = cyl->getDepth();
-	myVehicleShape.params.cyl.isRolling = cyl->getIfRolling();
-	myVehicleShape.params.cyl.isSteering = cyl->getIfSteering();
-	myVehicleShape.params.cyl.radius = cyl->getRadius();
+	myVehicleShape.params.cyl.depth = BackRightWheel->getDepth();
+	myVehicleShape.params.cyl.isRolling = BackRightWheel->getIfRolling();
+	myVehicleShape.params.cyl.isSteering = BackRightWheel->getIfSteering();
+	myVehicleShape.params.cyl.radius = BackRightWheel->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
+}
+
+SpeedRacer::~SpeedRacer() {
+	delete Body;
+	delete Bumper;
+	delete Spoiler;
+	delete FrontLeftWheel;
+	delete FrontRightWheel;
+	delete BackLeftWheel;
+	delete BackRightWheel;
 }
 
 // Overload constructor to instantiate remote vehicles from the server.
@@ -278,38 +288,65 @@ void SpeedRacer::draw() {
 		positionInGL();
 
 			// Variable to check how many wheels were found in the shape vector.
-			int numWheels = 0;
+			int numFrontWheels = 0;
 
 			for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
 				
 				// Dynamic cast the iterator to be a pointer of type cylinder.
 				Cylinder * cyl = dynamic_cast<Cylinder *>(*it);
 				
+				// Check that the dynamic cast succeeded and that the current iterator shape is a cylinder.
 				if (cyl != NULL) {
 					
-					// Check that the dynamic cast succeeded and set the rotations of the 2 front wheels to be equal to 
-					// the steering angle if the steering angle is non - zero.
+					// Set the Boolean for steering of the 2 front wheels to be true if the steering angle is non - zero.
 					if (steering != 0) {
-						if (numWheels < 2) {
+						if (numFrontWheels < 2) {
 							cyl->setIfSteering(true);
-							cyl->setRotation(steering);
-							numWheels++;
+							numFrontWheels++;
 						}
 					}
 					else {
 						cyl->setIfSteering(false);
 					}
 
-					// Similarly, check if the speed is non - zero. If yes, allow the wheels to roll.
-					// ** NEED TO IMPLEMENT
+					// Similarly, check if the speed is non - zero. If yes, set the Boolean for rolling of the wheels to
+					// be true.
 					if (speed != 0) {
 						cyl->setIfRolling(true);
 					}
 					else {
 						cyl->setIfRolling(false);
 					}
+
+					// Calculate the angular velocity of the wheels using w = v / r and update the value of the angular
+					// velocity.
+					AngularVelocity = AngularVelocity + speed / cyl->getRadius();
+					
+					// Draw the wheels of the vehicle with updated position and orientation.
+					glPushMatrix();
+						
+						// Translate the coordinate axes to where the wheel is located.
+						glTranslated(cyl->getX(), cyl->getRadius(), cyl->getZ());
+						
+						// Rotate the wheels about the y - axis by the same amount as the steering angle if the wheels
+						// are being steered.
+						if (cyl->getIfSteering() == true) {
+							glRotatef(-steering, 0, 1, 0);
+						}
+
+						// Rotate the wheels about the z - axis by the same value as the calculated angular velocity.
+						glRotated(-AngularVelocity, 0, 0, 1);
+
+						// Return the coordinate axes back to where the vehicle is centred.
+						glTranslated(-cyl->getX(), -cyl->getRadius(), -cyl->getZ());
+						(*it)->draw();
+					glPopMatrix();
 				}
-				(*it)->draw();
+				else {
+
+					// Draw other shapes normally.
+					(*it)->draw();
+				}
 			}
 
 	// Move back to global frame of reference.
