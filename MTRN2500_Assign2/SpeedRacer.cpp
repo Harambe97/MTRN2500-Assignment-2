@@ -19,6 +19,8 @@
 #include <GL/glut.h>
 #endif
 
+#define SCALING_FACTOR 4.0
+
 // Code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
 
 // Default constructor for the custom vehicle that sends the dimensions of the vehicle to the server and adds defined
@@ -188,6 +190,7 @@ SpeedRacer::SpeedRacer() {
 }
 
 SpeedRacer::~SpeedRacer() {
+	// Clear memory for shapes that were placed on the heap.
 	delete Body;
 	delete Bumper;
 	delete Spoiler;
@@ -195,6 +198,11 @@ SpeedRacer::~SpeedRacer() {
 	delete FrontRightWheel;
 	delete BackLeftWheel;
 	delete BackRightWheel;
+
+	for (std::vector<Shape *>::iterator it = ServerShapes.begin(); it != ServerShapes.end(); ++it) {
+		(*it)->~Shape();
+	}
+	ServerShapes.clear();
 }
 
 // Overload constructor to instantiate remote vehicles from the server.
@@ -224,6 +232,10 @@ SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 
 			// Add the newly defined shape to be drawn into the shape vector defined in 'Vehicle.hpp'
 			addShape(rect);
+
+			// Store the pointer to the newly defined shape into a vector so that the memory for this newly defined shape
+			// can be cleared once program completes execution.
+			ServerShapes.push_back(rect);
 		}
 		else if (it->type == TRIANGULAR_PRISM) {
 			TriangularPrism * tri = new TriangularPrism(0, 0, 0, 0, 0, 0, 0, 0);
@@ -241,6 +253,7 @@ SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 			tri->setRotation(it->rotation);
 
 			addShape(tri);
+			ServerShapes.push_back(tri);
 		}
 		else if (it->type == TRAPEZOIDAL_PRISM) {
 			TrapezoidPrism * trap = new TrapezoidPrism(0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -259,6 +272,7 @@ SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 			trap->setRotation(it->rotation);
 
 			addShape(trap);
+			ServerShapes.push_back(trap);
 		}
 		else if (it->type == CYLINDER) {
 			Cylinder * cyl = new Cylinder(0, 0, 0, 0, 0, 0);
@@ -276,6 +290,7 @@ SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 			cyl->setRotation(it->rotation);
 
 			addShape(cyl);
+			ServerShapes.push_back(cyl);
 		}
 	}
 }
@@ -320,7 +335,7 @@ void SpeedRacer::draw() {
 
 					// Calculate the angular velocity of the wheels using w = v / r and update the value of the angular
 					// velocity.
-					AngularVelocity = AngularVelocity + speed / cyl->getRadius();
+					AngularVelocity = AngularVelocity + (speed / cyl->getRadius()) / SCALING_FACTOR;
 					
 					// Draw the wheels of the vehicle with updated position and orientation.
 					glPushMatrix();

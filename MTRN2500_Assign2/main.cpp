@@ -41,6 +41,10 @@
 #include "Cylinder.h"
 #include "SpeedRacer.h"
 
+// Include the header file and '#defines' to process inputs from XBox controllers.
+#include "XBoxController.h"
+#define CONTROLLER_DEADZONE 7000
+
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
 #include "HUD.hpp"
@@ -62,9 +66,6 @@ void motion(int x, int y);
 using namespace std;
 using namespace scos;
 
-// ** An additional function added to the main file called 'DrawTest()' was used to test and draw shapes. 
-// ** (function definition around line 168)
-
 // Used to store the previous mouse location so we
 //   can calculate relative mouse movement.
 int prev_mouse_x = -1;
@@ -74,6 +75,13 @@ int prev_mouse_y = -1;
 Vehicle * vehicle = NULL;
 double speed = 0;
 double steering = 0;
+
+// Variables for XBoxController functionality.
+// Create an instantiation of the wrapper for the controller.
+XInputWrapper xinput;
+
+// Create a new XBox controller object, passing in a pointer to the wrapper, you can now use the controller as normal.
+GamePad::XBoxController controller(&xinput, 0);
 
 // default goal location
 std::deque<GoalState> goals;
@@ -164,7 +172,7 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 223)
+// (function called above 'glutSwapBuffers()', around line 277)
 void DrawTest() {
 	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
 	R1.draw();
@@ -219,8 +227,8 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 168)
-	DrawTest();
+	// (function definition around line 170)
+	//DrawTest();
 	
 	glutSwapBuffers();
 };
@@ -266,46 +274,66 @@ double getTime()
 
 void idle() {
 
-	if (KeyManager::get()->isAsciiKeyPressed('a')) {
+	// Added the ability to detect XBox Controller inputs. The 'SetDeadZone' function was not used as it motion using 
+	// any deadzone value that was set using the function. 
+
+	// Additional code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
+
+	// Toggle the pursuit camera if the 'Y' button was been pressed.
+	if (controller.PressedY()) {
+		Camera::get()->togglePursuitMode();
+	}
+
+	// Set the camera at the origin of the digital world if the 'A' button was pressed.
+	if (controller.PressedA()) {
+		Camera::get()->jumpToOrigin();
+	}
+
+	// Quit the program if 'Back' was pressed.
+	if (controller.PressedBack()) {
+		exit(0);
+	}
+
+	if (KeyManager::get()->isAsciiKeyPressed('a') || (controller.RightThumbLocation().GetX() < -CONTROLLER_DEADZONE)) {
 		Camera::get()->strafeLeft();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('c')) {
+	if (KeyManager::get()->isAsciiKeyPressed('c') || (controller.RightThumbLocation().GetY() < -CONTROLLER_DEADZONE)) {
 		Camera::get()->strafeDown();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('d')) {
+	if (KeyManager::get()->isAsciiKeyPressed('d') || (controller.RightThumbLocation().GetX() > CONTROLLER_DEADZONE)) {
 		Camera::get()->strafeRight();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('s')) {
+	if (KeyManager::get()->isAsciiKeyPressed('s') || (controller.RightTriggerLocation() > 0)) {
 		Camera::get()->moveBackward();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('w')) {
+	if (KeyManager::get()->isAsciiKeyPressed('w') || (controller.LeftTriggerLocation() > 0)) {
 		Camera::get()->moveForward();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed(' ')) {
+	if (KeyManager::get()->isAsciiKeyPressed(' ') || (controller.RightThumbLocation().GetY() > CONTROLLER_DEADZONE)) {
 		Camera::get()->strafeUp();
 	}
 
 	speed = 0;
 	steering = 0;
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
-		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT) || controller.PressedX()) {
+		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;
 	}
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT) || controller.PressedB()) {
 		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
 	}
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP)) {
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP) || controller.PressedUpDpad()) {
 		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
 	}
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN) || controller.PressedDownDpad()) {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
 	}
 
@@ -548,5 +576,3 @@ void motion(int x, int y) {
 	prev_mouse_x = x;
 	prev_mouse_y = y;
 };
-
-
