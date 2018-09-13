@@ -41,9 +41,13 @@
 #include "Cylinder.h"
 #include "SpeedRacer.h"
 
-// Include the header file and '#defines' to process inputs from XBox controllers.
+// Include the header file and '#defines' to process inputs from XBox controllers. The header file and its function
+// definitions were obtained from Assignment 1.
 #include "XBoxController.h"
-#define CONTROLLER_DEADZONE 7000
+#define CONTROLLER_DEADZONE 20000
+#define MAX_THUMBSTICK_RADIUS 32767
+#define CAMERA_STRAFE_DEADZONE 7000
+#define CAMERA_DRAG_SCALING 3000
 
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
@@ -172,7 +176,7 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 277)
+// (function called above 'glutSwapBuffers()', around line 232)
 void DrawTest() {
 	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
 	R1.draw();
@@ -227,7 +231,7 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 170)
+	// (function definition around line 177)
 	//DrawTest();
 	
 	glutSwapBuffers();
@@ -274,10 +278,13 @@ double getTime()
 
 void idle() {
 
-	// Added the ability to detect XBox Controller inputs. The 'SetDeadZone' function was not used as it motion using 
-	// any deadzone value that was set using the function. 
-
+	// Added the ability to detect XBox Controller inputs. The files for XBox controller functionality were obtained from
+	// Assignment 1.
+	
 	// Additional code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
+
+	// Set the deadzone of the thumbsticks.
+	controller.SetDeadzone(CONTROLLER_DEADZONE);
 
 	// Toggle the pursuit camera if the 'Y' button was been pressed.
 	if (controller.PressedY()) {
@@ -294,18 +301,27 @@ void idle() {
 		exit(0);
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('a') || (controller.RightThumbLocation().GetX() < -CONTROLLER_DEADZONE)) {
+	// Strafe the camera using the right thumbstick if the left shouder button was not pressed or using the keys that were
+	// originally set in the base code.
+	// A 'secondary deadzone' was set for the right thumbsticks when strafing the camera as the motion of the camera was
+	// not smooth when purely using the default thumbstick deadzones that were set.
+	if (KeyManager::get()->isAsciiKeyPressed('a') || ((controller.RightThumbLocation().GetX() < -CAMERA_STRAFE_DEADZONE) && (controller.PressedLeftShoulder() == false))) {
 		Camera::get()->strafeLeft();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('c') || (controller.RightThumbLocation().GetY() < -CONTROLLER_DEADZONE)) {
+	if (KeyManager::get()->isAsciiKeyPressed('c') || ((controller.RightThumbLocation().GetY() < -CAMERA_STRAFE_DEADZONE) && (controller.PressedLeftShoulder() == false))) {
 		Camera::get()->strafeDown();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed('d') || (controller.RightThumbLocation().GetX() > CONTROLLER_DEADZONE)) {
+	if (KeyManager::get()->isAsciiKeyPressed(' ') || ((controller.RightThumbLocation().GetY() > CAMERA_STRAFE_DEADZONE) && (controller.PressedLeftShoulder() == false))) {
+		Camera::get()->strafeUp();
+	}
+
+	if (KeyManager::get()->isAsciiKeyPressed('d') || ((controller.RightThumbLocation().GetX() > CAMERA_STRAFE_DEADZONE) && (controller.PressedLeftShoulder() == false))) {
 		Camera::get()->strafeRight();
 	}
 
+	// Move the camera front and back using the left and right triggers respectively.
 	if (KeyManager::get()->isAsciiKeyPressed('s') || (controller.RightTriggerLocation() > 0)) {
 		Camera::get()->moveBackward();
 	}
@@ -314,27 +330,51 @@ void idle() {
 		Camera::get()->moveForward();
 	}
 
-	if (KeyManager::get()->isAsciiKeyPressed(' ') || (controller.RightThumbLocation().GetY() > CONTROLLER_DEADZONE)) {
-		Camera::get()->strafeUp();
+	// Drag the camera using the right thumbstick if the left shoulder button was pressed. The y - coordinates are
+	// inverted to accurately reflect the direction the thumbstick is pushed in when dragging the camera view.
+	if (controller.PressedLeftShoulder()) {
+		int dx = 0;
+		int dy = 0;
+
+		if ((controller.RightThumbLocation().GetX() != 0) || (controller.RightThumbLocation().GetY() != 0)) {
+			dx = controller.RightThumbLocation().GetX() / CAMERA_DRAG_SCALING;
+			dy = -controller.RightThumbLocation().GetY() / CAMERA_DRAG_SCALING;
+			Camera::get()->mouseRotateCamera(dx, dy);
+		}
 	}
 
 	speed = 0;
 	steering = 0;
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT) || controller.PressedX()) {
+	// Steer and accelerate the vehicle based on arrow key presses or the position of the left thumbstick on a controller.
+	// The left thumb coordinates are statically cast as integers to prevent unintended behaviour when multiplied
+	// with the constants for steering and speed defined in 'Vehicle.hpp'.
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
 		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;
 	}
+	else if (controller.LeftThumbLocation().GetX() <= 0) {
+		steering = Vehicle::MAX_LEFT_STEERING_DEGS * 1 * static_cast<int>(controller.LeftThumbLocation().GetX()) / MAX_THUMBSTICK_RADIUS;
+	}
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT) || controller.PressedB()) {
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
 		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
 	}
-
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP) || controller.PressedUpDpad()) {
-		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+	else if (controller.LeftThumbLocation().GetX() > 0) {
+		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1 * static_cast<int>(controller.LeftThumbLocation().GetX()) / MAX_THUMBSTICK_RADIUS;
 	}
 
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN) || controller.PressedDownDpad()) {
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP)) {
+		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+	}
+	else if (controller.LeftThumbLocation().GetY() >= 0) {
+		speed = Vehicle::MAX_FORWARD_SPEED_MPS * static_cast<int>(controller.LeftThumbLocation().GetY()) / MAX_THUMBSTICK_RADIUS;
+	}
+
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
+	}
+	else if (controller.LeftThumbLocation().GetY() < 0) {
+		speed = Vehicle::MAX_BACKWARD_SPEED_MPS * static_cast<int>(-controller.LeftThumbLocation().GetY()) / MAX_THUMBSTICK_RADIUS;
 	}
 
 	// attempt to do data communications every 4 frames if we've created a local vehicle

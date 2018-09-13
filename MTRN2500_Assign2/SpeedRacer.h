@@ -11,7 +11,7 @@
 // Class derived from the 'Vehicle' class that defines any vehicle of type 'SpeedRacer'.
 class SpeedRacer : public Vehicle {
 	protected:
-		// Variables to for the local vehicle.
+		// Variables to allocate memory for shapes used to define the local vehicle.
 		RectangularPrism * Body;
 		TriangularPrism * Bumper;
 		TrapezoidPrism * Spoiler;
@@ -20,6 +20,8 @@ class SpeedRacer : public Vehicle {
 		Cylinder * BackLeftWheel;
 		Cylinder * BackRightWheel;
 		VehicleModel CustomVehicle;
+
+		// Variable to obtain the angular veloctiy of the wheels of the local vehicle.
 		double AngularVelocity = 0.0;
 
 		// Vector that stores pointers to server shapes, allows for memory to be freed after program completes.

@@ -199,9 +199,6 @@ SpeedRacer::~SpeedRacer() {
 	delete BackLeftWheel;
 	delete BackRightWheel;
 
-	for (std::vector<Shape *>::iterator it = ServerShapes.begin(); it != ServerShapes.end(); ++it) {
-		(*it)->~Shape();
-	}
 	ServerShapes.clear();
 }
 
@@ -234,7 +231,7 @@ SpeedRacer::SpeedRacer(VehicleModel * RemoteVehicles) {
 			addShape(rect);
 
 			// Store the pointer to the newly defined shape into a vector so that the memory for this newly defined shape
-			// can be cleared once program completes execution.
+			// can be cleared once the program completes execution.
 			ServerShapes.push_back(rect);
 		}
 		else if (it->type == TRIANGULAR_PRISM) {
