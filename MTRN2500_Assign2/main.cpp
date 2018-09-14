@@ -34,17 +34,18 @@
 #include "Shape.hpp"
 #include "Vehicle.hpp"
 
-// Include the header files for derived classes of shapes and vehicles.
+// Include the header files for derived classes of shapes and vehicles not in base code.
 #include "RectangularPrism.h"
 #include "TriangularPrism.h"
 #include "TrapezoidPrism.h"
 #include "Cylinder.h"
 #include "SpeedRacer.h"
+#include <math.h>
 
 // Include the header file and '#defines' to process inputs from XBox controllers. The header file and its function
 // definitions were obtained from Assignment 1.
 #include "XBoxController.h"
-#define CONTROLLER_DEADZONE 20000
+#define CONTROLLER_DEADZONE 15000
 #define MAX_THUMBSTICK_RADIUS 32767
 #define CAMERA_STRAFE_DEADZONE 7000
 #define CAMERA_DRAG_SCALING 3000
@@ -80,19 +81,19 @@ Vehicle * vehicle = NULL;
 double speed = 0;
 double steering = 0;
 
-// Variables for XBoxController functionality.
-// Create an instantiation of the wrapper for the controller.
-XInputWrapper xinput;
-
-// Create a new XBox controller object, passing in a pointer to the wrapper, you can now use the controller as normal.
-GamePad::XBoxController controller(&xinput, 0);
-
 // default goal location
 std::deque<GoalState> goals;
 
 std::map<int, Vehicle *> otherVehicles;
 
 int frameCounter = 0;
+
+// Additional variables for XBoxController functionality not in base code.
+// Create an instantiation of the wrapper for the controller.
+XInputWrapper xinput;
+
+// Create a new XBox controller object, passing in a pointer to the wrapper, you can now use the controller as normal.
+GamePad::XBoxController controller(&xinput, 0);
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
@@ -176,7 +177,7 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 232)
+// (function called above 'glutSwapBuffers()', around line 235)
 void DrawTest() {
 	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
 	R1.draw();
@@ -231,7 +232,7 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 177)
+	// (function definition around line 180)
 	//DrawTest();
 	
 	glutSwapBuffers();
@@ -405,7 +406,7 @@ void idle() {
 					// Create a pointer of type 'SpeedRacer' in order to obtain the vehicle model of a local 'SpeedRacer'.
 					SpeedRacer * MyVehicle = new SpeedRacer();
 					
-					// Send the address of the vehicle model to the server.
+					// Send the address of the local vehicle model to the server.
 					vm = *MyVehicle->getCustomVehicleModel();
 
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
@@ -549,7 +550,7 @@ void keydown(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27: // ESC key
 		exit(0);
-		break;      
+		break;
 	case '0':
 		Camera::get()->jumpToOrigin();
 		break;
@@ -559,18 +560,30 @@ void keydown(unsigned char key, int x, int y) {
 	// Challenge: Press 'l' to give chase to the server vehicle with vehicle ID 1.
 	/*case 'l':
 		Camera::get()->togglePursuitMode();
+		// attempt to do data communications every 4 frames if we've created a local vehicle
+		if (frameCounter % 4 == 0 && vehicle != NULL) {
+			// if not connected, attempt to connect every 2 seconds
+			if (!RemoteDataManager::IsConnected()) {
+				if (frameCounter % 120 == 0) {
+					// if we're still connected, receive and handle response messages from the server
+					if (RemoteDataManager::IsConnected()) {
+						std::vector<RemoteMessage> msgs = RemoteDataManager::Read();
+						for (unsigned int i = 0; i < msgs.size(); i++) {
+							RemoteMessage msg = msgs[i];
 
-		std::vector<RemoteMessage> msgs = RemoteDataManager::Read();
+							if (msg.type == 'M') {
 
-		for (unsigned int i = 0; i < msgs.size(); i++) {
-			RemoteMessage msg = msgs[i];
-			
-			std::vector<VehicleModel> models = GetVehicleModels(msg.payload);
-			
-			for (unsigned int i = 0; i < models.size(); i++) {
-				VehicleModel vm = models[i];
-				if (vm.remoteID == 1) {
-					
+								std::vector<VehicleModel> models = GetVehicleModels(msg.payload);
+								for (unsigned int i = 0; i < models.size(); i++) {
+									VehicleModel vm = models[i];
+
+									if (vm.remoteID == 1) {
+										cout << "Server vehicle found" << endl;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
