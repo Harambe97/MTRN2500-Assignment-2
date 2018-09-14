@@ -34,13 +34,19 @@
 #include "Shape.hpp"
 #include "Vehicle.hpp"
 
-// Include the header files for derived classes of shapes and vehicles not in base code.
+#include "RemoteDataManager.hpp"
+#include "Messages.hpp"
+#include "HUD.hpp"
+#include "ObstacleManager.hpp"
+
+// Additional includes and '#defines' not included in base code:
+
+// Include the header files for derived classes of shapes and vehicles.
 #include "RectangularPrism.h"
 #include "TriangularPrism.h"
 #include "TrapezoidPrism.h"
 #include "Cylinder.h"
 #include "SpeedRacer.h"
-#include <math.h>
 
 // Include the header file and '#defines' to process inputs from XBox controllers. The header file and its function
 // definitions were obtained from Assignment 1.
@@ -50,10 +56,10 @@
 #define CAMERA_STRAFE_DEADZONE 7000
 #define CAMERA_DRAG_SCALING 3000
 
-#include "RemoteDataManager.hpp"
-#include "Messages.hpp"
-#include "HUD.hpp"
-#include "ObstacleManager.hpp"
+// Includes and '#defines' to perform mathematical operations.
+#include <math.h>
+#define PI 3.14159265358979323846264338327950
+
 
 void display();
 void reshape(int width, int height);
@@ -88,12 +94,17 @@ std::map<int, Vehicle *> otherVehicles;
 
 int frameCounter = 0;
 
-// Additional variables for XBoxController functionality not in base code.
+// Additional global variables for XBoxController functionality not in base code: 
+
 // Create an instantiation of the wrapper for the controller.
 XInputWrapper xinput;
 
 // Create a new XBox controller object, passing in a pointer to the wrapper, you can now use the controller as normal.
 GamePad::XBoxController controller(&xinput, 0);
+
+// Additional global variables to determine the location of the server vehicle with ID 1:
+float ServerVehicleX = 0.0;
+float ServerVehicleZ = 0.0;
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
@@ -177,7 +188,7 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 235)
+// (function called above 'glutSwapBuffers()', around line 245)
 void DrawTest() {
 	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
 	R1.draw();
@@ -232,7 +243,7 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 180)
+	// (function definition around line 190)
 	//DrawTest();
 	
 	glutSwapBuffers();
@@ -279,8 +290,7 @@ double getTime()
 
 void idle() {
 
-	// Added the ability to detect XBox Controller inputs. The files for XBox controller functionality were obtained from
-	// Assignment 1.
+	// Added the ability to detect XBox Controller inputs to the base code.
 	
 	// Additional code written by: Haydn St. James (z5118383) & Mei Yan Tang (z5129009)
 
@@ -464,6 +474,21 @@ void idle() {
 								if(iter != otherVehicles.end()) {
 									Vehicle * veh = iter->second;
 									remoteDriver(veh, vs.x, vs.z, vs.rotation, vs.speed, vs.steering);
+									
+									// Code written by: Haydn St. James (z5118383)
+
+									// Obtain the x and z - coordinates of the server vehicle, which is in 'states[0]'.
+									ServerVehicleX = states[0].x;
+									ServerVehicleZ = states[0].z;
+									
+									// The array index that holds information about the server vehicle was determined
+									// using the debugging tool and the following code:
+
+									/*if (vs.remoteID == 1) {
+										ServerVehicleX = vs.x;
+										ServerVehicleZ = vs.z;
+										int index = i;
+									}*/
 								}
 							}
 							break;
@@ -557,39 +582,29 @@ void keydown(unsigned char key, int x, int y) {
 	case 'p':
 		Camera::get()->togglePursuitMode();
 		break;
+
+	// Code written by: Haydn St. James (z5118383)
+
 	// Challenge: Press 'l' to give chase to the server vehicle with vehicle ID 1.
+	// ** NEED WAY TO UPDATE POSITION CONTINUOUSLY AND ANIMATE THE VEHICLE, ALSO NEED MORE ANGLE CASES
 	/*case 'l':
-		Camera::get()->togglePursuitMode();
-		// attempt to do data communications every 4 frames if we've created a local vehicle
-		if (frameCounter % 4 == 0 && vehicle != NULL) {
-			// if not connected, attempt to connect every 2 seconds
-			if (!RemoteDataManager::IsConnected()) {
-				if (frameCounter % 120 == 0) {
-					// if we're still connected, receive and handle response messages from the server
-					if (RemoteDataManager::IsConnected()) {
-						std::vector<RemoteMessage> msgs = RemoteDataManager::Read();
-						for (unsigned int i = 0; i < msgs.size(); i++) {
-							RemoteMessage msg = msgs[i];
-
-							if (msg.type == 'M') {
-
-								std::vector<VehicleModel> models = GetVehicleModels(msg.payload);
-								for (unsigned int i = 0; i < models.size(); i++) {
-									VehicleModel vm = models[i];
-
-									if (vm.remoteID == 1) {
-										cout << "Server vehicle found" << endl;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+		// Determine the distance and angle to the server vehicle.
+		float Dist2SerVehicleX = abs(ServerVehicleX) - abs(vehicle->getX());
+		float Dist2SerVehicleZ = abs(ServerVehicleZ) - abs(vehicle->getZ());
+		float Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
+		float Angle2Serve = atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI;
+		
+		// Determine the time taken to travel to the server vehicle.
+		float Time2SerVehicle = Dist2SerVehicle / Vehicle::MAX_FORWARD_SPEED_MPS;
+		
+		//if ((Angle2Serve >= 0) && (Angle2Serve <= Vehicle::MAX_LEFT_STEERING_DEGS)) {
+			vehicle->update(Vehicle::MAX_FORWARD_SPEED_MPS, Angle2Serve, Time2SerVehicle);
+		//}
+		//else {
+		//	steering = -Angle2Serve;
+		//}
 		break;*/
 	}
-
 };
 
 void keyup(unsigned char key, int x, int y) {
