@@ -94,7 +94,10 @@ std::map<int, Vehicle *> otherVehicles;
 
 int frameCounter = 0;
 
-// Additional global variables for XBoxController functionality not in base code: 
+// Additional global variables not originally in base code: 
+
+// Create a pointer of type 'SpeedRacer' in order to access members of 'SpeedRacer'.
+SpeedRacer * MyVehicle = new SpeedRacer();
 
 // Create an instantiation of the wrapper for the controller.
 XInputWrapper xinput;
@@ -188,7 +191,7 @@ void drawGoals()
 }
 
 // Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-// (function called above 'glutSwapBuffers()', around line 245)
+// (function called above 'glutSwapBuffers()', around line 250)
 void DrawTest() {
 	RectangularPrism R1(20, 0, 20, 0, 10, 7, 5);
 	R1.draw();
@@ -243,7 +246,7 @@ void display() {
 	HUD::Draw();
 	
 	// Additional function used to test and draw objects as described in the Week 6 Tutorial set-up.
-	// (function definition around line 190)
+	// (function definition around line 193)
 	//DrawTest();
 	
 	glutSwapBuffers();
@@ -412,9 +415,6 @@ void idle() {
 					vm.remoteID = 0;
 
 					// Code written by: Haydn St. James (z5118383)
-
-					// Create a pointer of type 'SpeedRacer' in order to obtain the vehicle model of a local 'SpeedRacer'.
-					SpeedRacer * MyVehicle = new SpeedRacer();
 					
 					// Send the address of the local vehicle model to the server.
 					vm = *MyVehicle->getCustomVehicleModel();
@@ -477,10 +477,21 @@ void idle() {
 									
 									// Code written by: Haydn St. James (z5118383)
 
+									// Challenge: When 'l' is pressed, chase the server vehicle.
+
+									// ** NEED TO CHASE PROPERLY, ANGLE CASES INSUFFICIENT
+									// ** VEHICLE MOSTLY TRAVELS IN CIRCLES
+
 									// Obtain the x and z - coordinates of the server vehicle, which is in 'states[0]'.
 									ServerVehicleX = states[0].x;
 									ServerVehicleZ = states[0].z;
-									
+
+									// Determine the distance and angle to the server vehicle.
+									float Dist2SerVehicleX = abs(ServerVehicleX) - abs(vehicle->getX());
+									float Dist2SerVehicleZ = abs(ServerVehicleZ) - abs(vehicle->getZ());
+									float Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
+									float Angle2Serve = atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI;
+
 									// The array index that holds information about the server vehicle was determined
 									// using the debugging tool and the following code:
 
@@ -489,6 +500,23 @@ void idle() {
 										ServerVehicleZ = vs.z;
 										int index = i;
 									}*/
+
+									if (MyVehicle->ReturnChaseMode() == true) {
+										if ((Angle2Serve >= 0) && (Angle2Serve <= Vehicle::MAX_LEFT_STEERING_DEGS)) {
+											steering = static_cast<double>(Angle2Serve);
+										}
+										else if ((Angle2Serve <= 0) && (Angle2Serve >= Vehicle::MAX_RIGHT_STEERING_DEGS)) {
+											steering = static_cast<double>(Angle2Serve);
+										}
+										else if (Angle2Serve > Vehicle::MAX_LEFT_STEERING_DEGS) {
+											steering = Vehicle::MAX_LEFT_STEERING_DEGS;
+										}
+										else if (Angle2Serve < Vehicle::MAX_RIGHT_STEERING_DEGS) {
+											steering = Vehicle::MAX_RIGHT_STEERING_DEGS;
+										}
+										// Set the speed of the local vehicle to its maximum forward speed.
+										speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+									}
 								}
 							}
 							break;
@@ -586,24 +614,11 @@ void keydown(unsigned char key, int x, int y) {
 	// Code written by: Haydn St. James (z5118383)
 
 	// Challenge: Press 'l' to give chase to the server vehicle with vehicle ID 1.
-	// ** NEED WAY TO UPDATE POSITION CONTINUOUSLY AND ANIMATE THE VEHICLE, ALSO NEED MORE ANGLE CASES
-	/*case 'l':
-		// Determine the distance and angle to the server vehicle.
-		float Dist2SerVehicleX = abs(ServerVehicleX) - abs(vehicle->getX());
-		float Dist2SerVehicleZ = abs(ServerVehicleZ) - abs(vehicle->getZ());
-		float Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
-		float Angle2Serve = atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI;
-		
-		// Determine the time taken to travel to the server vehicle.
-		float Time2SerVehicle = Dist2SerVehicle / Vehicle::MAX_FORWARD_SPEED_MPS;
-		
-		//if ((Angle2Serve >= 0) && (Angle2Serve <= Vehicle::MAX_LEFT_STEERING_DEGS)) {
-			vehicle->update(Vehicle::MAX_FORWARD_SPEED_MPS, Angle2Serve, Time2SerVehicle);
-		//}
-		//else {
-		//	steering = -Angle2Serve;
-		//}
-		break;*/
+	case 'l':
+
+		// Toggle the chase mode.
+		MyVehicle->ToggleChaseMode();
+		break;
 	}
 };
 

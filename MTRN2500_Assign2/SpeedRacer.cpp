@@ -187,6 +187,8 @@ SpeedRacer::SpeedRacer() {
 	myVehicleShape.params.cyl.radius = BackRightWheel->getRadius();
 
 	CustomVehicle.shapes.push_back(myVehicleShape);
+
+	manualChase = false;
 }
 
 SpeedRacer::~SpeedRacer() {
@@ -368,4 +370,12 @@ void SpeedRacer::draw() {
 // Obtain the memory address for the vehicle model of 'SpeedRacer' and return the address. 
 VehicleModel * SpeedRacer::getCustomVehicleModel() {
 	return &CustomVehicle;
+}
+
+void SpeedRacer::ToggleChaseMode() {
+	manualChase = !manualChase;
+}
+
+bool SpeedRacer::ReturnChaseMode() {
+	return manualChase;
 }

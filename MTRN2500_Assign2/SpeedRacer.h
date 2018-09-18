@@ -26,10 +26,15 @@ class SpeedRacer : public Vehicle {
 
 		// Vector that stores pointers to server shapes, allows for memory to be freed after program completes.
 		std::vector<Shape *> ServerShapes;
+
+		// Variable to toggle between manual and autonomous chase modes.
+		bool manualChase;
 	public:
 		SpeedRacer(); // Default constructor to instantiate the local vehicle.
 		~SpeedRacer();
 		SpeedRacer(VehicleModel * RemoteVehicles); // Overload constructor to instantiate remote vehicles.
 		void draw();
 		VehicleModel * getCustomVehicleModel(); // Obtains the memory address for the model of the local vehicle.
+		void ToggleChaseMode(); // Toggles the autonomous pursuit of the server vehicle.
+		bool ReturnChaseMode(); // Returns whether the chase mode is on or off.
 };
