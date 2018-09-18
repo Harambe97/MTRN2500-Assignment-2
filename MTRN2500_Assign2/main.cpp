@@ -59,7 +59,7 @@
 // Includes and '#defines' to perform mathematical operations.
 #include <math.h>
 #define PI 3.14159265358979323846264338327950
-
+#define SERVER_VEHICLE_REACHED 4
 
 void display();
 void reshape(int width, int height);
@@ -108,6 +108,10 @@ GamePad::XBoxController controller(&xinput, 0);
 // Additional global variables to determine the location of the server vehicle with ID 1:
 float ServerVehicleX = 0.0;
 float ServerVehicleZ = 0.0;
+float Dist2SerVehicleX = 0.0;
+float Dist2SerVehicleZ = 0.0;
+float Dist2SerVehicle = 0.0;
+float Angle2Serve = 0.0;
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
@@ -391,6 +395,46 @@ void idle() {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS * static_cast<int>(-controller.LeftThumbLocation().GetY()) / MAX_THUMBSTICK_RADIUS;
 	}
 
+	// Challenge: When 'l' is pressed, chase the server vehicle.
+	// ** NEED TO CHASE PROPERLY, CAR KEEPS ZIGZAGGING
+	if (MyVehicle->ReturnChaseMode() == true) {
+		/*if ((Angle2Serve >= 0) && (Angle2Serve <= Vehicle::MAX_LEFT_STEERING_DEGS)) {
+			Angle2Serve = Angle2Serve;
+		}
+		else if ((Angle2Serve < 0) && (Angle2Serve >= Vehicle::MAX_RIGHT_STEERING_DEGS)) {
+			Angle2Serve = Angle2Serve;
+		}*/
+		if (Angle2Serve > 180) {
+			while (Angle2Serve > 180) {
+				Angle2Serve -= 360;
+			}
+		}
+		else if (Angle2Serve < -180) {
+			while (Angle2Serve < -180) {
+				Angle2Serve += 360;
+			}
+		} 
+		else if (Angle2Serve >= Vehicle::MAX_LEFT_STEERING_DEGS) {
+			Angle2Serve = Vehicle::MAX_LEFT_STEERING_DEGS;
+		}
+		else if (Angle2Serve <= Vehicle::MAX_RIGHT_STEERING_DEGS) {
+			Angle2Serve = Vehicle::MAX_RIGHT_STEERING_DEGS;
+		}
+
+		// If the local vehicle has reached the server vehicle, cease all motion.
+		if (Dist2SerVehicle <= SERVER_VEHICLE_REACHED) {
+			speed = 0;
+			steering = 0;
+		}
+		else {
+
+			// Set the speed of the local vehicle to its maximum forward speed and the steering to be equal to the 
+			// post - processed angle to the server vehicle.
+			speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+			steering = Angle2Serve;
+		}
+	}
+
 	// attempt to do data communications every 4 frames if we've created a local vehicle
 	if(frameCounter % 4 == 0 && vehicle != NULL) {
 
@@ -479,18 +523,15 @@ void idle() {
 
 									// Challenge: When 'l' is pressed, chase the server vehicle.
 
-									// ** NEED TO CHASE PROPERLY, ANGLE CASES INSUFFICIENT
-									// ** VEHICLE MOSTLY TRAVELS IN CIRCLES
-
 									// Obtain the x and z - coordinates of the server vehicle, which is in 'states[0]'.
 									ServerVehicleX = states[0].x;
 									ServerVehicleZ = states[0].z;
 
 									// Determine the distance and angle to the server vehicle.
-									float Dist2SerVehicleX = abs(ServerVehicleX) - abs(vehicle->getX());
-									float Dist2SerVehicleZ = abs(ServerVehicleZ) - abs(vehicle->getZ());
-									float Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
-									float Angle2Serve = atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI;
+									Dist2SerVehicleX = ServerVehicleX - vehicle->getX();
+									Dist2SerVehicleZ = ServerVehicleZ - vehicle->getZ();
+									Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
+									Angle2Serve = (atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI) - vehicle->getRotation();
 
 									// The array index that holds information about the server vehicle was determined
 									// using the debugging tool and the following code:
@@ -500,23 +541,6 @@ void idle() {
 										ServerVehicleZ = vs.z;
 										int index = i;
 									}*/
-
-									if (MyVehicle->ReturnChaseMode() == true) {
-										if ((Angle2Serve >= 0) && (Angle2Serve <= Vehicle::MAX_LEFT_STEERING_DEGS)) {
-											steering = static_cast<double>(Angle2Serve);
-										}
-										else if ((Angle2Serve <= 0) && (Angle2Serve >= Vehicle::MAX_RIGHT_STEERING_DEGS)) {
-											steering = static_cast<double>(Angle2Serve);
-										}
-										else if (Angle2Serve > Vehicle::MAX_LEFT_STEERING_DEGS) {
-											steering = Vehicle::MAX_LEFT_STEERING_DEGS;
-										}
-										else if (Angle2Serve < Vehicle::MAX_RIGHT_STEERING_DEGS) {
-											steering = Vehicle::MAX_RIGHT_STEERING_DEGS;
-										}
-										// Set the speed of the local vehicle to its maximum forward speed.
-										speed = Vehicle::MAX_FORWARD_SPEED_MPS;
-									}
 								}
 							}
 							break;
@@ -615,8 +639,6 @@ void keydown(unsigned char key, int x, int y) {
 
 	// Challenge: Press 'l' to give chase to the server vehicle with vehicle ID 1.
 	case 'l':
-
-		// Toggle the chase mode.
 		MyVehicle->ToggleChaseMode();
 		break;
 	}
