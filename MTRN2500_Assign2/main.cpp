@@ -54,7 +54,7 @@
 #define CONTROLLER_DEADZONE 15000
 #define MAX_THUMBSTICK_RADIUS 32767
 #define CAMERA_STRAFE_DEADZONE 7000
-#define CAMERA_DRAG_SCALING 3000
+#define CAMERA_DRAG_SCALING 2500
 
 // Includes and '#defines' to perform mathematical operations.
 #include <math.h>
@@ -531,7 +531,7 @@ void idle() {
 									Dist2SerVehicleX = ServerVehicleX - vehicle->getX();
 									Dist2SerVehicleZ = ServerVehicleZ - vehicle->getZ();
 									Dist2SerVehicle = sqrt(Dist2SerVehicleX * Dist2SerVehicleX + Dist2SerVehicleZ * Dist2SerVehicleZ);
-									Angle2Serve = (atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI) - vehicle->getRotation();
+									Angle2Serve = (atan2f(Dist2SerVehicleZ, Dist2SerVehicleX) * 180 / PI) - vehicle->getRotation() - states[0].rotation;
 
 									// The array index that holds information about the server vehicle was determined
 									// using the debugging tool and the following code:
